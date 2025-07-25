@@ -1,0 +1,71 @@
+<div class="caption">
+  <h5>Club Management System</h5>
+  <input type="text" placeholder="Search..." (input)="onFilter($event)">
+</div>
+
+<div class="card">
+  <table class="member-table">
+    <thead>
+    <tr>
+      <th>DB_ID</th> <th>School No</th> <th>Name Surname</th> <th>Role</th>
+      <th>Register Date</th> <th>Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+      @for (member of filteredMembers; track member.id) {
+        <tr>
+          <td>{{ member.id }}</td>
+          <td>{{ member.memberNo }}</td>
+          <td>{{ member.firstName }} {{ member.lastName }}</td>
+          <td>{{ member.role }}</td>
+          <td>{{ member.registrationDate }}</td>
+          <td>{{ member.membershipStatus }}</td>
+          <td>
+            <button class="button-edit" (click)="openEditDialog(member)">Edit</button>
+          </td>
+        </tr>
+      }
+
+      @if (filteredMembers.length === 0) {
+        <tr>
+          <td colspan="6" class="text-center">No registered member.</td>
+        </tr>
+      }
+
+    </tbody>
+  </table>
+</div>
+
+<!--  member edit and detail modal  -->
+@if (displayDialog && selectedMember) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <h3>Edit Member Info / Actions</h3>
+      <div>
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" [(ngModel)]="selectedMember.firstName" required>
+        </div>
+        <div class="field">
+          <label for="lastname">Surname</label>
+          <input type="text" id="lastname" [(ngModel)]="selectedMember.lastName" required>
+        </div>
+        <div class="field">
+          <label for="role">Role</label>
+          <select id="role" [(ngModel)]="selectedMember.role">
+            @for (role of clubRoles; track role) {
+              <option [value]="role">{{role}}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="expelMember()">Expel</button>
+        <button (click)="hideDialog()">Cancel</button>
+        <button (click)="saveMember()">Save</button>
+      </div>
+    </div>
+  </div>
+}
