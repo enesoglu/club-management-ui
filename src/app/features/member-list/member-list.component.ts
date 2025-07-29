@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { ClubMember, MemberRole } from '../../core/models/club-member.model';
+import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
 import { MemberService } from '../../core/services/member.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { MemberService } from '../../core/services/member.service';
 })
 export class MemberListComponent implements OnInit {
 
+  memberStatus = Object.values(MembershipStatus);
   clubRoles = Object.values(MemberRole);         // for .html dropdown
   members: ClubMember[] = [];                                 // full member list
   filteredMembers: ClubMember[] = [];                         // members filtered during the search
@@ -85,6 +86,10 @@ export class MemberListComponent implements OnInit {
       this.hideDialog();
     }
   }
+
+
+
+
 
   // graduateMember(): {}
 
