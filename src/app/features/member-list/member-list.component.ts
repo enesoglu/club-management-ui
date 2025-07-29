@@ -28,6 +28,7 @@ export class MemberListComponent implements OnInit {
   loadMembers(): void {
     this.memberService.getMembers().subscribe({
       next: (data: ClubMember[]) => {
+        data.sort((a, b) => a.firstName.localeCompare(b.firstName))   //sorts by first name
         this.members = data;
         this.filteredMembers = data;
       },
@@ -64,7 +65,14 @@ export class MemberListComponent implements OnInit {
 
   saveMember(): void {
     if (!this.selectedMember) return;
-    // TODO: memberService.updateMember(this.selectedMember) çağrılacak
+    this.memberService.saveMember(this.selectedMember)
+    console.log('Saving:', this.selectedMember);
+    this.hideDialog();
+  }
+
+  updateMember(): void {
+    if (!this.selectedMember) return;
+    this.memberService.saveMember(this.selectedMember).subscribe();
     console.log('Saving:', this.selectedMember);
     this.hideDialog();
   }
@@ -72,7 +80,7 @@ export class MemberListComponent implements OnInit {
   expelMember(): void {
     if (!this.selectedMember) return;
     if (confirm(`'${this.selectedMember.firstName}' will be expelled. Are you sure?`)) {
-      // TODO: memberService.deleteMember(this.selectedMember.id) çağrılacak
+      this.memberService.deleteMember(this.selectedMember.id).subscribe();
       console.log('Expelled:', this.selectedMember.id);
       this.hideDialog();
     }

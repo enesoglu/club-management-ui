@@ -16,8 +16,8 @@ export interface ClubMember {
 
 export enum MemberRole {
   PRESIDENT = "PRESIDENT",
-  VICE_PRESIDENT = "VICE PRESIDENT",
-  BOARD_MEMBER = "BOARD MEMBER",
+  VICE_PRESIDENT = "VICE_PRESIDENT",
+  BOARD_MEMBER = "BOARD_MEMBER",
   CREW = "CREW",
   MEMBER = "MEMBER"
 }
