@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
-import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
+import { TableModule } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 import { MemberService } from '../../core/services/member.service';
+import {ClubMember, MemberRole, MembershipStatus} from '../../core/models/club-member.model';
 
 @Component({
   selector: 'app-member-list',
-  imports: [FormsModule, CommonModule],
-  templateUrl: './member-list.component.html',
-  styleUrls: ['./member-list.component.css']
+  templateUrl: 'member-list.component.html',
+  styleUrls: ['member-list.component.css'],
+  standalone: true,
+  imports: [TableModule, CommonModule, ButtonModule],
+  providers: [MemberService]
 })
-export class MemberListComponent implements OnInit {
+export class MemberListComponent {
 
   memberStatus = Object.values(MembershipStatus);
   clubRoles = Object.values(MemberRole);         // for .html dropdown
@@ -21,17 +24,19 @@ export class MemberListComponent implements OnInit {
   displayDialog: boolean = false;                             // is the edit windows open
 
   constructor(private memberService: MemberService) {}        // runs memberService
+  first = 0;
 
-  // get members with memberService
+  rows = 10;
+
   ngOnInit(): void {
     this.loadMembers();
   }
+
   loadMembers(): void {
     this.memberService.getMembers().subscribe({
       next: (data: ClubMember[]) => {
         data.sort((a, b) => a.firstName.localeCompare(b.firstName))   //sorts by first name
         this.members = data;
-        this.filteredMembers = data;
       },
       error: (error: any) => {
         console.error('error occured', error);
@@ -39,58 +44,29 @@ export class MemberListComponent implements OnInit {
     });
   }
 
-  // member search (filter)
-  onFilter(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    if (!searchTerm) {
-      this.filteredMembers = this.members;
-      return;
-    }
-    this.filteredMembers = this.members.filter(member =>
-      String(member.memberNo).includes(searchTerm) ||
-      (member.firstName + ' ' + member.lastName).toLowerCase().includes(searchTerm) ||
-      member.phoneNumber?.toLowerCase().includes(searchTerm)
-    );
+  next() {
+    this.first = this.first + this.rows;
   }
 
-  // .html:28
-  openEditDialog(member: ClubMember): void {
-    this.selectedMember = { ...member };
-    this.displayDialog = true;
+  prev() {
+    this.first = this.first - this.rows;
   }
 
-  hideDialog(): void {
-    this.displayDialog = false;
-    this.selectedMember = null;
+  reset() {
+    this.first = 0;
   }
 
-  saveMember(): void {
-    if (!this.selectedMember) return;
-    this.memberService.saveMember(this.selectedMember)
-    console.log('Saving:', this.selectedMember);
-    this.hideDialog();
+  // @ts-ignore
+  pageChange(event ) {
+    this.first = event.first;
+    this.rows = event.rows;
   }
 
-  updateMember(): void {
-    if (!this.selectedMember) return;
-    this.memberService.saveMember(this.selectedMember).subscribe();
-    console.log('Saving:', this.selectedMember);
-    this.hideDialog();
+  isLastPage(): boolean {
+    return this.members ? this.first + this.rows >= this.members.length : true;
   }
 
-  expelMember(): void {
-    if (!this.selectedMember) return;
-    if (confirm(`'${this.selectedMember.firstName}' will be expelled. Are you sure?`)) {
-      this.memberService.deleteMember(this.selectedMember.id).subscribe();
-      console.log('Expelled:', this.selectedMember.id);
-      this.hideDialog();
-    }
+  isFirstPage(): boolean {
+    return this.members ? this.first === 0 : true;
   }
-
-
-
-
-
-  // graduateMember(): {}
-
 }
