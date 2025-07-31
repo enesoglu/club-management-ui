@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
-
-import { TableModule } from 'primeng/table';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
 import { MemberService } from '../../core/services/member.service';
 import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
 
 @Component({
   selector: 'app-member-list',
   templateUrl: 'member-list.component.html',
   styleUrls: ['member-list.component.css'],
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule],
+  imports: [FormsModule, TableModule, CommonModule, ButtonModule, Tooltip],
   providers: [MemberService]
 })
 export class MemberListComponent {
@@ -19,6 +23,8 @@ export class MemberListComponent {
   memberStatus = Object.values(MembershipStatus);
   clubRoles = Object.values(MemberRole);
   members: ClubMember[] = [];                                 // full member list
+  selectedMember: ClubMember | null = null;
+  displayDialog: boolean = false;
 
   constructor(private memberService: MemberService) {}        // runs memberService
   first = 0;
@@ -41,6 +47,31 @@ export class MemberListComponent {
     });
   }
 
+  openEditDialog(member: ClubMember): void {
+    this.selectedMember = { ...member };
+    this.displayDialog = true;
+  }
+
+  hideDialog(): void {
+    this.displayDialog = false;
+    this.selectedMember = null;
+  }
+
+  expelMember(): void {
+    if (!this.selectedMember) return;
+    if (confirm(`'${this.selectedMember.firstName}' will be expelled. Are you sure?`)) {
+      this.memberService.deleteMember(this.selectedMember.id).subscribe();
+      console.log('Expelled:', this.selectedMember.id);
+      this.hideDialog();
+    }
+  }
+
+
+
+
+  //  -------------------------------------------
+  //  Paginator methods
+
   next() {
     this.first = this.first + this.rows;
   }
@@ -53,8 +84,7 @@ export class MemberListComponent {
     this.first = 0;
   }
 
-  // @ts-ignore
-  pageChange(event ) {
+  pageChange(event:any ) {
     this.first = event.first;
     this.rows = event.rows;
   }
@@ -66,4 +96,7 @@ export class MemberListComponent {
   isFirstPage(): boolean {
     return this.members ? this.first === 0 : true;
   }
+
+
+  protected readonly EditDialogComponent = EditDialogComponent;
 }

@@ -13,17 +13,16 @@ export let appConfig: ApplicationConfig;
 appConfig = {
   providers: [
     provideAnimationsAsync(),
+
     providePrimeNG({
       theme: {
         preset: Aura,
-        options: {
-          surface: {
-            colorScheme: 'light', // veya 'dark'
-            palette: 'bluegray'
-          }
-        }
+        /*options: {
+          darkModeSelector: 'light',
+        }*/
       }
     }),
+
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),

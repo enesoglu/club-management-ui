@@ -1,4 +1,11 @@
-#header {
-  background-color: #f5f5f5;
-  text-align: center;
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  /* Satır Yüksekliği (padding ile kontrol edilir) */
+  padding: 0.1rem 0.75rem;
+  font-size: 14px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
 }

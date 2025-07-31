@@ -1,4 +1,4 @@
-<div class="mb-4">
+<div class="flex justify-content-center gap-2">
   <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" text />
   <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
   <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" text />
@@ -6,6 +6,7 @@
 
 <div class="card">
   <p-table
+    size=small
     [value]="members"
     [paginator]="true"
     [rows]="10"
@@ -15,28 +16,37 @@
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     (onPage)="pageChange($event)"
     [rowsPerPageOptions]="[10, 25, 50]"
+
   >
 
     <ng-template #header>
       <tr>
         <th style="width:2%"></th>
-        <th style="width:10%">Database ID</th>
-        <th style="width:15%">School No</th>
-        <th style="width:22%">Name Surname</th>
-        <th style="width:17%">Role</th>
-        <th style="width:12%">Register Date</th>
-        <th style="width:25%">Status</th>
+        <th style="width:7%">DB ID</th>
+        <th style="width:12%">School No</th>
+        <th style="width:17%">Name Surname</th>
+        <th style="width:15%">Role</th>
+        <th style="width:10%">Register Date</th>
+        <th style="width:8%">Status</th>
+        <th style="width:5%">Actions</th>
+        <th style="width:2%"></th>
       </tr>
     </ng-template>
-    <ng-template #body let-members>
+    <ng-template #body let-member>
       <tr>
         <td></td>
-        <td>{{ members.id }}</td>
-        <td>{{ members.memberNo }}</td>
-        <td>{{ members.firstName + " " + members.lastName }}</td>
-        <td>{{ members.role }}</td>
-        <td>{{ members.registrationDate }}</td>
-        <td>{{ members.membershipStatus }}</td>
+        <td>{{ member.id }}</td>
+        <td>{{ member.memberNo }}</td>
+        <td>{{ member.firstName + " " + member.lastName }}</td>
+        <td>{{ member.role }}</td>
+        <td>{{ member.registrationDate }}</td>
+        <td>{{ member.membershipStatus }}</td>
+        <td>
+          <p-button type="button" size="small" icon="pi pi-user-edit" pTooltip="Edit User" text />
+
+          <p-button type="button" size="small" icon="pi pi-user-minus" pTooltip="Delete User" text />
+        </td>
+        <td></td>
       </tr>
     </ng-template>
     <ng-template #paginatorleft>
@@ -47,3 +57,4 @@
     </ng-template>
   </p-table>
 </div>
+
