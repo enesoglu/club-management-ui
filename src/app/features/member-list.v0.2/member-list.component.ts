@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MemberService } from '../../core/services/member.service';
-import {ClubMember, MemberRole, MembershipStatus} from '../../core/models/club-member.model';
+import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
 
 @Component({
   selector: 'app-member-list',
@@ -17,11 +17,8 @@ import {ClubMember, MemberRole, MembershipStatus} from '../../core/models/club-m
 export class MemberListComponent {
 
   memberStatus = Object.values(MembershipStatus);
-  clubRoles = Object.values(MemberRole);         // for .html dropdown
+  clubRoles = Object.values(MemberRole);
   members: ClubMember[] = [];                                 // full member list
-  filteredMembers: ClubMember[] = [];                         // members filtered during the search
-  selectedMember: ClubMember | null = null;                   // "selectedMember variable" could be null or one member (object)
-  displayDialog: boolean = false;                             // is the edit windows open
 
   constructor(private memberService: MemberService) {}        // runs memberService
   first = 0;

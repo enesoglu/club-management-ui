@@ -3,6 +3,7 @@
   <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
   <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" text />
 </div>
+
 <div class="card">
   <p-table
     [value]="members"
@@ -15,6 +16,7 @@
     (onPage)="pageChange($event)"
     [rowsPerPageOptions]="[10, 25, 50]"
   >
+
     <ng-template #header>
       <tr>
         <th style="width:2%"></th>
