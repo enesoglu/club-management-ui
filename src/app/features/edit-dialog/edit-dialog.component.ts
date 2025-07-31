@@ -1,37 +1,44 @@
-import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TableModule } from 'primeng/table';
+import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
+
+import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
-import { MemberService } from '../../core/services/member.service';
-import { MemberListComponent } from '../member-list.v0.2/member-list.component';
-import {Dialog} from 'primeng/dialog';
-import {InputTextModule} from 'primeng/inputtext';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-edit-dialog',
   templateUrl: 'edit-dialog.component.html',
-  styleUrls: ['edit-dialog.component.css'],
   standalone: true,
-  imports: [Dialog, ButtonModule, InputTextModule, FormsModule, TableModule, CommonModule, ButtonModule],
-  providers: [MemberService]
+  imports: [
+    CommonModule,
+    FormsModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    SelectModule,
+  ]
 })
 export class EditDialogComponent {
   @Input() visible: boolean = false;
   @Input() member: ClubMember | null = null;
 
-  @Output() dialogClosed = new EventEmitter<void>();
+  @Output() visibleChange = new EventEmitter<boolean>();
+  @Output() memberSaved = new EventEmitter<ClubMember>();
 
-  showDialog() {
-    // @ts-ignore
-    this.dialogClosed.emit(this.member);
+  clubRoles = Object.values(MemberRole);
+  memberStatus = Object.values(MembershipStatus);
+
+  save() {
+    if (this.member) {
+      this.memberSaved.emit(this.member);
+    }
   }
 
-
-
+  cancel() {
+    this.visible = false;
+    this.visibleChange.emit(this.visible);
+  }
 }
-
-
-
