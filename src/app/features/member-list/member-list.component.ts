@@ -1,7 +1,7 @@
 import { MemberService } from '../../core/services/member.service';
 import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,6 +14,10 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
+import {Menu} from 'primeng/menu';
+import {MenuItem, MessageService} from 'primeng/api';
+import {FileUpload} from 'primeng/fileupload';
+import {Toast} from 'primeng/toast';
 
 @Component({
   selector: 'app-member-list',
@@ -24,11 +28,15 @@ import { MultiSelect } from 'primeng/multiselect';
     FormsModule, TableModule, CommonModule,
     ButtonModule, Tooltip, MemberDialogComponent,
     Card, IconField, InputIcon, InputText,
-    MultiSelect,
+    MultiSelect, Menu, FileUpload, Toast,
   ],
-  providers: [MemberService]
+  providers: [MemberService, MessageService]
 })
 export class MemberListComponent implements OnInit {
+
+  @ViewChild('fileUploader') fileUploader!: FileUpload;
+
+  importMenuItems!: MenuItem[];
 
   memberStatus = Object.values(MembershipStatus);
   clubRoles = Object.values(MemberRole);
@@ -45,12 +53,45 @@ export class MemberListComponent implements OnInit {
   roleOptions = this.clubRoles;
   statusOptions = [...this.memberStatus];
 
-  constructor(private memberService: MemberService) {}
+  constructor(
+    private memberService: MemberService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.loadMembers();
+
+    this.importMenuItems = [
+      {
+        label: 'Add New Member',
+        icon: 'pi pi-user-plus',
+        command: () => {
+          this.openNewMemberDialog();
+        }
+      },
+      {
+        label: 'Import Members (.csv)',
+        icon: 'pi pi-file-import',
+        command: () => {
+          (this.fileUploader.el.nativeElement.querySelector('input[type="file"]') as HTMLElement).click();
+        }
+      }
+    ];
   }
 
+  // response "200 OK" from backend
+  onCsvUpload(event: any) {
+    const response = JSON.parse(event.xhr.response); // get response from backend
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: response.body || 'Members imported successfully.' });
+    this.loadMembers();
+  }
+
+  // error while uploading
+  onCsvError(event: any) {
+    const errorResponse = JSON.parse(event.xhr.response); // get response from backend
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: errorResponse.body || 'File could not be imported.' });
+  }
+  
   loadMembers(): void {
     this.memberService.getMembers().subscribe({
       next: (data: ClubMember[]) => {

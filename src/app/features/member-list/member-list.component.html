@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="flex justify-content-center my-4">
 <p-card [style]="{width: '98%'}">
 
@@ -8,7 +10,7 @@
       <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" text />
     </div>
 
-    <div class="flex align-items-center gap-2">
+    <div class="flex flex-wrap gap-2 justify-content-end">
 
       <!--member role filter-->
       <p-multiselect  [options]="roleOptions"
@@ -130,12 +132,8 @@
     </ng-template>
     <ng-template #footer>
       <ng-template #paginatorleft>
-        <p-button
-          text
-          type="button"
-          icon="pi pi-plus"
-          pTooltip="Add New Member"
-          (click)="openNewMemberDialog()"/>
+        <p-menu #menu [model]="importMenuItems" [popup]="true" [appendTo]="footer"></p-menu>
+        <p-button #plusBtn type="button" icon="pi pi-plus" (click)="menu.toggle($event)" text />
       </ng-template>
       <ng-template #paginatorright>
         <p-button type="button" icon="pi pi-cloud" text />
@@ -151,4 +149,17 @@
     (memberSaved)="onMemberSave($event)"
   />
 }
+
+<p-fileUpload
+  #fileUploader
+  name="file"
+  url="http://localhost:8080/api/members/import-csv"
+  mode="basic"
+  accept=".csv"
+  [auto]="true"
+  [styleClass]="'hidden-file-upload'"
+  (onUpload)="onCsvUpload($event)"
+  (onError)="onCsvError($event)">
+</p-fileUpload>
+
 </div>

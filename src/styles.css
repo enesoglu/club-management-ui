@@ -38,3 +38,7 @@ body { margin: 0; font-family: Poppins, sans-serif; }
   font-size: 0.8rem !important;
   width: 100%;
 }
+
+.hidden-file-upload .p-button {
+  display: none;
+}
