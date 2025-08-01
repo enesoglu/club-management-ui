@@ -19,11 +19,11 @@ export enum MemberRole {
   VICE_PRESIDENT = "VICE_PRESIDENT",
   BOARD_MEMBER = "BOARD_MEMBER",
   CREW = "CREW",
-  MEMBER = "MEMBER"
+  MEMBER = "MEMBER",
+  VETERAN = "VETERAN"
 }
 
 export enum MembershipStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
-  VETERAN = "VETERAN"
 }

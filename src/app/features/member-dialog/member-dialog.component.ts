@@ -64,4 +64,9 @@ export class MemberDialogComponent {
   }
 
   protected readonly year_of_study = year_of_study;
+
+  isNewMember: boolean = false;
+  editInfoText: string = "Update the information of ";
+  deleteInfoText: string = "Delete the member {{ member?.firstName }}";
+  newInfoText: string = "Creating a new member";
 }
