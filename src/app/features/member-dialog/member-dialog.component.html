@@ -1,3 +1,4 @@
+
 <p-dialog
   header="Edit Profile"
   [modal]="true"
@@ -53,33 +54,62 @@
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="year">Year of Study</label>
-                <input pInputText id="year" [(ngModel)]="member.yearOfStudy" />
+                <p-select
+                  [appendTo]="'body'"
+                  id="status"
+                  [options]="year_of_study"
+                  [(ngModel)]="member.yearOfStudy"/>
               </div>
             </div>
-
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="department">Department</label>
-                <input pInputText id="department" [(ngModel)]="member.department" />
+                <p-autocomplete
+                  id="department"
+                  [appendTo]="'body'"
+                  [(ngModel)]="member.department"
+                  [suggestions]="filteredItems"
+                  (completeMethod)="searchDepartment($event)"
+                  [dropdown]="true"
+                  placeholder="Start typing to search..."
+                  forceSelection="true">
+                </p-autocomplete>
               </div>
             </div>
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="faculty">Faculty</label>
-                <input pInputText id="faculty" [(ngModel)]="member.faculty" />
+                <p-autocomplete
+                  id="faculty"
+                  [appendTo]="'body'"
+                  [(ngModel)]="member.faculty"
+                  [suggestions]="filteredItems"
+                  (completeMethod)="searchFaculty($event)"
+                  [dropdown]="true"
+                  placeholder="Start typing to search..."
+                  forceSelection="true">
+                </p-autocomplete>
               </div>
             </div>
 
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="role">Role</label>
-                <p-select id="role" [options]="clubRoles" [(ngModel)]="member.role" />
+                <p-select
+                  [appendTo]="'body'"
+                  id="role"
+                  [options]="clubRoles"
+                  [(ngModel)]="member.role" />
               </div>
             </div>
             <div class="field col-12 md:col-6">
               <div class="flex flex-column  ">
                 <label for="status">Status</label>
-                <p-select id="status" [options]="memberStatus" [(ngModel)]="member.membershipStatus" />
+                <p-select
+                  [appendTo]="'body'"
+                  id="status"
+                  [options]="memberStatus"
+                  [(ngModel)]="member.membershipStatus"/>
               </div>
             </div>
           </div>

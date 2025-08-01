@@ -4,13 +4,12 @@ import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club
 import { Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { switchMap } from 'rxjs/operators';
 
 import { Card } from 'primeng/card'
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
-import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
+import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
@@ -23,7 +22,7 @@ import { MultiSelect } from 'primeng/multiselect';
   standalone: true,
   imports: [
     FormsModule, TableModule, CommonModule,
-    ButtonModule, Tooltip, EditDialogComponent,
+    ButtonModule, Tooltip, MemberDialogComponent,
     Card, IconField, InputIcon, InputText,
     MultiSelect,
   ],
@@ -89,14 +88,9 @@ export class MemberListComponent implements OnInit {
     });
   }
 
-  openEditDialog(member: ClubMember): void {
+  openMemberDialog(member: ClubMember): void {
     this.selectedMember = {...member};
     this.displayDialog = true;
-  }
-
-  hideDialog(): void {
-    this.displayDialog = false;
-    this.selectedMember = null;
   }
 
   // filter methods
