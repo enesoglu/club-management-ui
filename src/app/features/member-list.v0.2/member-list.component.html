@@ -50,19 +50,50 @@
     [value]="filteredMembers"
     [tableStyle]="{ 'min-width': '50rem' }"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    (onPage)="pageChange($event)"
-  >
+    (onPage)="pageChange($event)">
 
     <ng-template #header>
       <tr>
         <th style="width:2%"><p-tableHeaderCheckbox/></th>
-        <th style="width:7%">DB ID</th>
-        <th style="width:12%">School No</th>
-        <th style="width:17%">Name Surname</th>
-        <th style="width:15%">Role</th>
-        <th style="width:10%">Register Date</th>
-        <th style="width:9%">Status</th>
-        <th class="text-center" style="width:5%">Actions</th>
+        <th pSortableColumn="id" style="width:7%">
+          <div class="flex items-center gap-2">
+            DB ID
+            <p-sortIcon field="id"/>
+          </div>
+        </th>
+        <th pSortableColumn="memberNo" style="width:12%">
+          <div class="flex items-center gap-2">
+            School No
+            <p-sortIcon field="memberNo"/>
+          </div>
+        </th>
+        <th pSortableColumn="firstName" style="width:17%">
+          <div class="flex items-center gap-2">
+            Name Surname
+            <p-sortIcon field="firstName"/>
+          </div>
+        </th>
+        <th pSortableColumn="role" style="width:15%">
+          <div class="flex items-center gap-2">
+            Role
+            <p-sortIcon field="role"/>
+          </div>
+        </th>
+        <th pSortableColumn="registrationDate" style="width:10%">
+          <div class="flex items-center gap-2">
+            Register Date
+            <p-sortIcon field="registrationDate"/>
+          </div>
+        </th>
+        <th pSortableColumn="status" style="width:9%">
+          <div class="flex items-center gap-2">
+            Status
+            <p-sortIcon field="status"/>
+          </div>
+        </th>
+        <th class="text-center" style="width:5%">
+          Actions
+        </th>
         <th style="width:2%"></th>
       </tr>
     </ng-template>

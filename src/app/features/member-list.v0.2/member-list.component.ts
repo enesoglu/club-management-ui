@@ -1,12 +1,12 @@
 import { MemberService } from '../../core/services/member.service';
 import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
 
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Card } from 'primeng/card'
-import { TableModule } from 'primeng/table';
+import { TableModule} from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
@@ -44,7 +44,7 @@ export class MemberListComponent implements OnInit {
   searchTerm: string = ''
   roleOptions = this.clubRoles;
   statusOptions = [...this.memberStatus];
-
+  
   constructor(private memberService: MemberService) {}
 
   ngOnInit(): void {
