@@ -8,14 +8,9 @@
 
   <ng-template pTemplate="header">
     <div class="flex flex-column gap-2">
-      <h2 class="m-0">Member Details</h2>
+      <h2 class="m-0">{{ member?.id ? 'Edit Profile' : 'Add New Member' }}</h2>
       <span class="p-text-secondary">
-        @if (!isNewMember) {
-          {{ editInfoText }} {{ member?.firstName }} {{ member?.lastName }}.
-        }
-        @else if (isNewMember){
-          {{ newInfoText }}
-        }
+        {{ member?.id ? 'Update the information of ' + member?.firstName + ' ' + member?.lastName : 'Fill in the information for the new member' }}
       </span>
     </div>
   </ng-template>
@@ -125,13 +120,12 @@
   </div>
 
   <ng-template pTemplate="footer">
-    @if (!isNewMember) {
+    @if (member?.id) {
       <div class="footer-left">
         Database ID: {{ member?.id }}<br>
         Registration Date: {{ member?.registrationDate }}
       </div>
     }
-
     <p-button label="Cancel" severity="secondary" (click)="cancel()" />
     <p-button label="Save" (click)="save()" />
   </ng-template>

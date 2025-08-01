@@ -44,7 +44,7 @@ export class MemberListComponent implements OnInit {
   searchTerm: string = ''
   roleOptions = this.clubRoles;
   statusOptions = [...this.memberStatus];
-  
+
   constructor(private memberService: MemberService) {}
 
   ngOnInit(): void {
@@ -83,13 +83,21 @@ export class MemberListComponent implements OnInit {
         console.log('Updated: '+ updatedMember.id);
         this.loadMembers()
         this.displayDialog = false;
+        this.selectedMember = null;
       },
       error: (err) => console.error('error occured', err)
     });
   }
 
+  // dialog for editing
   openMemberDialog(member: ClubMember): void {
     this.selectedMember = {...member};
+    this.displayDialog = true;
+  }
+
+  // dialog for new member
+  openNewMemberDialog(): void {
+    this.selectedMember = {} as ClubMember
     this.displayDialog = true;
   }
 

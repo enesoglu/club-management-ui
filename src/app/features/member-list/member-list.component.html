@@ -114,7 +114,7 @@
             type="button"
             size="small"
             icon="pi pi-user-edit"
-            pTooltip="Edit User"
+            pTooltip="Edit Member"
             text/>
 
           <p-button
@@ -122,7 +122,7 @@
             type="button"
             size="small"
             icon="pi pi-user-minus"
-            pTooltip="Delete User"
+            pTooltip="Delete Member"
             text/>
         </td>
         <td></td>
@@ -130,7 +130,12 @@
     </ng-template>
     <ng-template #footer>
       <ng-template #paginatorleft>
-        <p-button type="button" icon="pi pi-plus" text />
+        <p-button
+          text
+          type="button"
+          icon="pi pi-plus"
+          pTooltip="Add New Member"
+          (click)="openNewMemberDialog()"/>
       </ng-template>
       <ng-template #paginatorright>
         <p-button type="button" icon="pi pi-cloud" text />
