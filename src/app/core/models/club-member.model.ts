@@ -7,7 +7,7 @@ export interface ClubMember {
   role: MemberRole;
   email: string;
   phoneNumber: string;
-  yearOfStudy: number;
+  yearOfStudy: string;
   faculty: string;
   department: string;
   registrationDate: Date;
@@ -25,6 +25,5 @@ export enum MemberRole {
 export enum MembershipStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
-  GRADUATED = "GRADUATED",
   VETERAN = "VETERAN"
 }

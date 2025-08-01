@@ -1,79 +1,149 @@
-<div class="caption">
-  <h5>Club Management System</h5>
-  <input type="text" placeholder="Search..." (input)="onFilter($event)">
-</div>
+<div class="flex justify-content-center my-4">
+<p-card [style]="{width: '98%'}">
 
-<div class="card">
-  <table class="member-table">
-    <thead>
-    <tr>
-      <th>DB_ID</th> <th>School No</th> <th>Name Surname</th> <th>Role</th>
-      <th>Register Date</th> <th>Status</th>
-    </tr>
-    </thead>
+  <div class="flex justify-content-between align-items-center mb-4">
+    <div class="flex gap-2">
+      <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" text />
+      <p-button type="button" icon="pi pi-refresh" (click)="loadMembers()" text />
+      <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" text />
+    </div>
 
-    <tbody>
-      @for (member of filteredMembers; track member.id) {
-        <tr>
-          <td>{{ member.id }}</td>
-          <td>{{ member.memberNo }}</td>
-          <td>{{ member.firstName }} {{ member.lastName }}</td>
-          <td>{{ member.role }}</td>
-          <td>{{ member.registrationDate }}</td>
-          <td>{{ member.membershipStatus }}</td>
-          <td>
-            <button class="button-edit" (click)="openEditDialog(member)">Edit</button>
-          </td>
-        </tr>
-      }
+    <div class="flex align-items-center gap-2">
 
-      @if (filteredMembers.length === 0) {
-        <tr>
-          <td colspan="6" class="text-center">No registered member.</td>
-        </tr>
-      }
+      <!--member role filter-->
+      <p-multiselect  [options]="roleOptions"
+                      [(ngModel)]="selectedRoles"
+                      placeholder="Select Role"
+                      class="w-full md:w-15rem"
+                      display="chip"
+                      filter="false"
+                      (onChange)="applyFilters()">
+      </p-multiselect>
 
-    </tbody>
-  </table>
-</div>
+      <!--member status filter-->
+      <p-multiselect [options]="statusOptions"
+                     [(ngModel)]="selectedStatus"
+                     placeholder="Select Status"
+                     class="w-full md:w-15rem"
+                     display="chip"
+                     filter="false"
+                     (onChange)="applyFilters()">
+      </p-multiselect>
 
-<!--  member edit and detail modal  -->
-@if (displayDialog && selectedMember) {
-  <div class="modal-overlay">
-    <div class="modal-content">
-      <h3>Edit Member Info / Actions</h3>
-      <div>
-        <div class="field">
-          <label for="name">Name</label>
-          <input type="text" id="name" [(ngModel)]="selectedMember.firstName" required>
-        </div>
-        <div class="field">
-          <label for="lastname">Surname</label>
-          <input type="text" id="lastname" [(ngModel)]="selectedMember.lastName" required>
-        </div>
-        <div class="field">
-          <label for="role">Role</label>
-          <select id="role" [(ngModel)]="selectedMember.role">
-            @for (role of clubRoles; track role) {
-              <option [value]="role">{{role}}</option>
-            }
-          </select>
-        </div>
-        <div class="field">
-          <label for="status">Status</label>
-          <select id="status" [(ngModel)]="selectedMember.membershipStatus">
-            @for (status of memberStatus; track status) {
-              <option [value]="status">{{status}}</option>
-            }
-          </select>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button (click)="expelMember()">Expel</button>
-        <button (click)="updateMember()">Update</button>
-        <button (click)="hideDialog()">Cancel</button>
-      </div>
+      <!--search bar-->
+      <p-iconfield iconPosition="left">
+        <p-inputicon class="pi pi-search" />
+        <input type="text"
+               pInputText
+               placeholder="Search"
+               (input)="onSearch($event)" />
+      </p-iconfield>
     </div>
   </div>
+
+  <p-table
+    [paginator]="true"
+    [rows]="10"
+    [first]="first"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50, 100]"
+    [value]="filteredMembers"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    (onPage)="pageChange($event)">
+
+    <ng-template #header>
+      <tr>
+        <th style="width:2%"><p-tableHeaderCheckbox/></th>
+        <th pSortableColumn="id" style="width:7%">
+          <div class="flex items-center gap-2">
+            DB ID
+            <p-sortIcon field="id"/>
+          </div>
+        </th>
+        <th pSortableColumn="memberNo" style="width:12%">
+          <div class="flex items-center gap-2">
+            School No
+            <p-sortIcon field="memberNo"/>
+          </div>
+        </th>
+        <th pSortableColumn="firstName" style="width:17%">
+          <div class="flex items-center gap-2">
+            Name Surname
+            <p-sortIcon field="firstName"/>
+          </div>
+        </th>
+        <th pSortableColumn="role" style="width:15%">
+          <div class="flex items-center gap-2">
+            Role
+            <p-sortIcon field="role"/>
+          </div>
+        </th>
+        <th pSortableColumn="registrationDate" style="width:10%">
+          <div class="flex items-center gap-2">
+            Register Date
+            <p-sortIcon field="registrationDate"/>
+          </div>
+        </th>
+        <th pSortableColumn="status" style="width:9%">
+          <div class="flex items-center gap-2">
+            Status
+            <p-sortIcon field="status"/>
+          </div>
+        </th>
+        <th class="text-center" style="width:5%">
+          Actions
+        </th>
+        <th style="width:2%"></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-member>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="member" />
+        </td>
+        <td>{{ member.id }}</td>
+        <td>{{ member.memberNo }}</td>
+        <td>{{ member.firstName + " " + member.lastName }}</td>
+        <td>{{ member.role }}</td>
+        <td>{{ member.registrationDate }}</td>
+        <td>{{ member.membershipStatus }}</td>
+        <td class="flex justify-content-center">
+          <p-button
+            (click)="openMemberDialog(member)"
+            type="button"
+            size="small"
+            icon="pi pi-user-edit"
+            pTooltip="Edit User"
+            text/>
+
+          <p-button
+            (click)="expelMember(member)"
+            type="button"
+            size="small"
+            icon="pi pi-user-minus"
+            pTooltip="Delete User"
+            text/>
+        </td>
+        <td></td>
+      </tr>
+    </ng-template>
+    <ng-template #footer>
+      <ng-template #paginatorleft>
+        <p-button type="button" icon="pi pi-plus" text />
+      </ng-template>
+      <ng-template #paginatorright>
+        <p-button type="button" icon="pi pi-cloud" text />
+      </ng-template>
+    </ng-template>
+  </p-table>
+</p-card>
+
+@if (displayDialog && selectedMember) {
+  <app-member-dialog
+    [(visible)]="displayDialog"
+    [member]="selectedMember"
+    (memberSaved)="onMemberSave($event)"
+  />
 }
+</div>

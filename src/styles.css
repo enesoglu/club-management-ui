@@ -1,4 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Poppins, sans-serif; }
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.1rem 1rem !important;
+  font-size: 0.875rem !important;
+}
+.p-datatable .p-datatable-thead > tr > th {
+  padding: 0.5rem 1rem !important;
+  font-size: 0.875rem !important;
+}
+
+.p-card {
+  --p-card-body-padding: 0.5rem 1.25rem 1.25rem 1.25rem !important;
+}
+
+.p-multiselect  {
+  font-size: 0.875rem !important;
+}
+.p-select {
+  font-size: 0.875rem !important;
+}
+
+.p-iconfield {
+  font-size: 0.875rem !important;
+}
+.edit-profile-dialog .field {
+  margin-bottom: 0.3rem !important;
+}
+.input-field {
+  font-size: 0.875rem !important;
+}

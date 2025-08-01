@@ -1,37 +1,62 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
-import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
 import { MemberService } from '../../core/services/member.service';
+import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
+
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { Card } from 'primeng/card'
+import { TableModule} from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { InputText } from 'primeng/inputtext';
+import { MultiSelect } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-member-list',
-  imports: [FormsModule, CommonModule],
-  templateUrl: './member-list.component.html',
-  styleUrls: ['./member-list.component.css']
+  templateUrl: 'member-list.component.html',
+  styleUrls: ['member-list.component.css'],
+  standalone: true,
+  imports: [
+    FormsModule, TableModule, CommonModule,
+    ButtonModule, Tooltip, MemberDialogComponent,
+    Card, IconField, InputIcon, InputText,
+    MultiSelect,
+  ],
+  providers: [MemberService]
 })
 export class MemberListComponent implements OnInit {
 
   memberStatus = Object.values(MembershipStatus);
-  clubRoles = Object.values(MemberRole);         // for .html dropdown
-  members: ClubMember[] = [];                                 // full member list
-  filteredMembers: ClubMember[] = [];                         // members filtered during the search
-  selectedMember: ClubMember | null = null;                   // "selectedMember variable" could be null or one member (object)
-  displayDialog: boolean = false;                             // is the edit windows open
+  clubRoles = Object.values(MemberRole);
 
-  constructor(private memberService: MemberService) {}        // runs memberService
+  members: ClubMember[] = [];
+  filteredMembers: ClubMember[] = [];
+  selectedMember: ClubMember | null = null;
+  displayDialog: boolean = false;
 
-  // get members with memberService
+  // variables for filters
+  selectedStatus: string[] = ['ACTIVE'];
+  selectedRoles: MemberRole[] = [];
+  searchTerm: string = ''
+  roleOptions = this.clubRoles;
+  statusOptions = [...this.memberStatus];
+  
+  constructor(private memberService: MemberService) {}
+
   ngOnInit(): void {
     this.loadMembers();
   }
+
   loadMembers(): void {
     this.memberService.getMembers().subscribe({
       next: (data: ClubMember[]) => {
         data.sort((a, b) => a.firstName.localeCompare(b.firstName))   //sorts by first name
         this.members = data;
-        this.filteredMembers = data;
+        this.applyFilters();
       },
       error: (error: any) => {
         console.error('error occured', error);
@@ -39,58 +64,91 @@ export class MemberListComponent implements OnInit {
     });
   }
 
-  // member search (filter)
-  onFilter(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    if (!searchTerm) {
-      this.filteredMembers = this.members;
-      return;
+  expelMember(member: ClubMember): void {
+    if (!member) return;
+    if (confirm(`'${member.firstName}' will be expelled. Are you sure?`)) {
+      this.memberService.deleteMember(member.id).subscribe({
+        next: () => {
+          console.log('Deleted: '+ member.id);
+          this.loadMembers()
+        },
+        error: (err) => console.error('error occured', err)
+      });
     }
-    this.filteredMembers = this.members.filter(member =>
-      String(member.memberNo).includes(searchTerm) ||
-      (member.firstName + ' ' + member.lastName).toLowerCase().includes(searchTerm) ||
-      member.phoneNumber?.toLowerCase().includes(searchTerm)
-    );
   }
 
-  // .html:28
-  openEditDialog(member: ClubMember): void {
-    this.selectedMember = { ...member };
+  onMemberSave(updatedMember: ClubMember) {
+    this.memberService.saveMember(updatedMember).subscribe({
+      next: () => {
+        console.log('Updated: '+ updatedMember.id);
+        this.loadMembers()
+        this.displayDialog = false;
+      },
+      error: (err) => console.error('error occured', err)
+    });
+  }
+
+  openMemberDialog(member: ClubMember): void {
+    this.selectedMember = {...member};
     this.displayDialog = true;
   }
 
-  hideDialog(): void {
-    this.displayDialog = false;
-    this.selectedMember = null;
-  }
+  // filter methods
+  applyFilters(): void {
+    let result = this.members;
 
-  saveMember(): void {
-    if (!this.selectedMember) return;
-    this.memberService.saveMember(this.selectedMember)
-    console.log('Saving:', this.selectedMember);
-    this.hideDialog();
-  }
-
-  updateMember(): void {
-    if (!this.selectedMember) return;
-    this.memberService.saveMember(this.selectedMember).subscribe();
-    console.log('Saving:', this.selectedMember);
-    this.hideDialog();
-  }
-
-  expelMember(): void {
-    if (!this.selectedMember) return;
-    if (confirm(`'${this.selectedMember.firstName}' will be expelled. Are you sure?`)) {
-      this.memberService.deleteMember(this.selectedMember.id).subscribe();
-      console.log('Expelled:', this.selectedMember.id);
-      this.hideDialog();
+    // filter for status
+    if (this.selectedStatus.length > 0 && !this.selectedStatus.includes('Tümü')) {
+      result = result.filter(member => this.selectedStatus.includes(member.membershipStatus));
     }
+
+    // filter for roles
+    if (this.selectedRoles.length > 0) {
+      result = result.filter(member => this.selectedRoles.includes(member.role));
+    }
+
+    // search bar
+    if (this.searchTerm) {
+      const lowerCaseSearch = this.searchTerm.toLowerCase();
+      result = result.filter(member =>
+        (member.firstName + " " + member.lastName).toLowerCase().includes(lowerCaseSearch) ||
+        (member.email || '').toLowerCase().includes(lowerCaseSearch) ||
+        (member.phoneNumber || '').toString().toLowerCase().includes(lowerCaseSearch) ||
+        (member.memberNo || '').toString().toLowerCase().includes(lowerCaseSearch)
+      );
+    }
+
+    // display the result
+    this.filteredMembers = result;
   }
 
+  onSearch(event: Event): void {
+    this.searchTerm = (event.target as HTMLInputElement).value;
+    this.applyFilters();
+  }
 
+  //  Paginator methods
+  first: number = 0;
+  rows: number = 10;
 
+  next() {
+    this.first = this.first + this.rows;
+  }
 
+  prev() {
+    this.first = this.first - this.rows;
+  }
 
-  // graduateMember(): {}
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
 
+  isLastPage(): boolean {
+    return this.filteredMembers ? this.first + this.rows >= this.filteredMembers.length : true;
+  }
+
+  isFirstPage(): boolean {
+    return this.filteredMembers ? this.first === 0 : true;
+  }
 }
