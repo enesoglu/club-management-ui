@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
-import {faculty_list, department_list, year_of_study} from '../../core/data/ankara-university-data';
+import { faculty_list, department_list, year_of_study } from '../../core/data/ankara-university-data';
 
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -64,4 +64,5 @@ export class MemberDialogComponent {
   }
 
   protected readonly year_of_study = year_of_study;
+
 }

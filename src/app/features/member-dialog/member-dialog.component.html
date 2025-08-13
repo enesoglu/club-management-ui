@@ -1,15 +1,17 @@
 <p-dialog
-  header="Edit Profile"
+  header="Member Details"
   [modal]="true"
   [(visible)]="visible"
   (onHide)="cancel()"
   [style]="{ width: '40rem' }"
-  styleClass="edit-profile-dialog">
+  styleClass="member-details-dialog">
 
   <ng-template pTemplate="header">
     <div class="flex flex-column gap-2">
-      <h2 class="m-0">Edit Profile</h2>
-      <span class="p-text-secondary">Update the information of {{ member?.firstName }} {{ member?.lastName }}</span>
+      <h2 class="m-0">{{ member?.id ? 'Edit Profile' : 'Add New Member' }}</h2>
+      <span class="p-text-secondary">
+        {{ member?.id ? 'Update the information of ' + member?.firstName + ' ' + member?.lastName : 'Fill in the information for the new member' }}
+      </span>
     </div>
   </ng-template>
 
@@ -118,6 +120,12 @@
   </div>
 
   <ng-template pTemplate="footer">
+    @if (member?.id) {
+      <div class="footer-left">
+        Database ID: {{ member?.id }}<br>
+        Registration Date: {{ member?.registrationDate }}
+      </div>
+    }
     <p-button label="Cancel" severity="secondary" (click)="cancel()" />
     <p-button label="Save" (click)="save()" />
   </ng-template>
