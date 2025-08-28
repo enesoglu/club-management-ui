@@ -11,10 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(credentials: any){
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa(credentials.email + ':' + credentials.password)
-    });
-    return this.http.get(`${this.apiUrl}/findByEmail/${credentials.email}`, {headers: headers})
+    return this.http.get(`${this.apiUrl}/findByEmail/${credentials.email}`)
   }
 
   saveUser(credentials: any){
@@ -33,4 +30,14 @@ export class AuthService {
     return !!localStorage.getItem('user');
   }
 
+  getAuthToken(): string | null {
+    const userString = localStorage.getItem('user');
+    if (!userString) {
+      return null;
+    }
+
+    const user = JSON.parse(userString);
+
+    return 'Basic ' + btoa(user.email + ':' + user.password);
+  }
 }
