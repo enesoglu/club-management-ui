@@ -17,7 +17,7 @@ export class MemberService {
   }
 
   deleteMember(id: number): Observable<void> {
-    return this.http.delete<void>(this.apiUrl + '/' + id)
+    return this.http.delete<void>(this.apiUrl + '/findById/' + id)
   }
 
   saveMember(member: ClubMember): Observable<ClubMember> {
