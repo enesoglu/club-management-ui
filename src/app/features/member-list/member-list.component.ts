@@ -18,6 +18,7 @@ import { Menu } from 'primeng/menu';
 import { MenuItem, MessageService } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Toast } from 'primeng/toast';
+import {Header} from '../header/header';
 
 @Component({
   selector: 'app-member-list',
@@ -28,7 +29,7 @@ import { Toast } from 'primeng/toast';
     FormsModule, TableModule, CommonModule,
     ButtonModule, Tooltip, MemberDialogComponent,
     Card, IconField, InputIcon, InputText,
-    MultiSelect, Menu, FileUpload, Toast,
+    MultiSelect, Menu, FileUpload, Toast, Header,
   ],
   providers: [MemberService, MessageService]
 })
