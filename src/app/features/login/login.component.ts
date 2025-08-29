@@ -38,7 +38,6 @@ export class LoginComponent {
       password: ['', [Validators.required]]
     });
   }
-
   onSubmit() {
     this.formSubmitted = true;
     if (this.credentials.valid) {
@@ -52,7 +51,9 @@ export class LoginComponent {
             detail: 'Login Successful.',
             life: 3000 });
 
-          this.authService.saveUser(this.credentials.value)
+          const creds = this.credentials.value;
+          const authToken = 'Basic ' + btoa(creds.email + ':' + creds.password);
+          this.authService.saveAuthToken(authToken);
           void this.router.navigate(['/members'])
 
           this.credentials.reset();

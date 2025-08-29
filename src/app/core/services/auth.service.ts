@@ -11,36 +11,25 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(credentials: any){
-    return this.http.get(`${this.apiUrl}/findByEmail/${credentials.email}`)
-  }
-
-  saveUser(credentials: any){
-    localStorage.setItem('user', JSON.stringify(credentials));
-  }
-
-  getUser(){
-    return localStorage.getItem('user');
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa(credentials.email + ':' + credentials.password)
+    });
+    return this.http.get(`${this.apiUrl}/findByEmail/${credentials.email}`, {headers: headers})
   }
 
   logout(){
-    localStorage.removeItem('user');
+    localStorage.removeItem('authToken');
   }
 
   isLoggedIn(){
-    return !!localStorage.getItem('user');
+    return !!localStorage.getItem('authToken');
+  }
+
+  saveAuthToken(token: string){
+    localStorage.setItem('authToken', token);
   }
 
   getAuthToken(): string | null {
-    const userString = localStorage.getItem('user');
-    if (!userString) {
-      return null;
-    }
-
-    const user = JSON.parse(userString);
-
-    if (user && user.email && user.password) {
-      return 'Basic ' + btoa(user.email + ':' + user.password);
-    }
-    return null;
+    return localStorage.getItem('authToken');
   }
 }
