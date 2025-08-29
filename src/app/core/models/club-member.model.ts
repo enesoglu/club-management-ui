@@ -11,21 +11,21 @@ export interface ClubMember {
   faculty: string;
   department: string;
   password: string;
-  positions: Array<Position>;
+  positions?: Position[];
   registrationDate: Date;
   membershipStatus: MembershipStatus;
 }
 
 export enum MembershipStatus {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
+  ACTIVE    = "ACTIVE",
+  INACTIVE  = "INACTIVE",
 }
 
 export enum YearOfStudy {
-  PREPRATION,
-  FIRST_YEAR,
-  SECOND_YEAR,
-  THIRD_YEAR,
-  FOURTH_YEAR,
-  GRADUATED = -1
+  PREPRATION  = "Prepration",
+  FIRST_YEAR  = "First Year",
+  SECOND_YEAR = "Second Year",
+  THIRD_YEAR  = "Third Year",
+  FOURTH_YEAR = "Fourth Year",
+  GRADUATED   = "Graduated",
 }
