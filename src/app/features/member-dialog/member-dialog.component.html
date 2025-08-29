@@ -10,7 +10,7 @@
     <div class="flex flex-column gap-2">
       <h2 class="m-0">{{ member?.id ? 'Edit Profile' : 'Add New Member' }}</h2>
       <span class="p-text-secondary">
-        {{ member?.id ? 'Update the information of ' + member?.firstName + ' ' + member?.lastName : 'Fill in the information for the new member' }}
+        {{ member?.id ? 'Update the information of ' + member?.name : 'Fill in the information for the new member' }}
       </span>
     </div>
   </ng-template>
@@ -23,16 +23,16 @@
             <div class="field col-12 md:col-6">
               <div class="flex flex-column ">
                 <label for="firstName">First Name</label>
-                <input pInputText id="firstName" [(ngModel)]="member.firstName" />
+                <input pInputText id="firstName" [(ngModel)]="member.name" />
               </div>
             </div>
+            <!--TODO to be deleted-->
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="lastName">Last Name</label>
-                <input pInputText id="lastName" [(ngModel)]="member.lastName" />
+                <input pInputText id="lastName" [(ngModel)]="member.name" />
               </div>
             </div>
-
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="email">Email</label>
@@ -42,24 +42,25 @@
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="phone">Phone</label>
-                <input pInputText id="phone" [(ngModel)]="member.phoneNumber" />
+                <input pInputText id="phone" [(ngModel)]="member.phone" />
               </div>
             </div>
 
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="schoolNo">School No</label>
-                <input pInputText id="schoolNo" [(ngModel)]="member.memberNo" />
+                <input pInputText id="schoolNo" [(ngModel)]="member.schoolNo" />
               </div>
             </div>
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
                 <label for="year">Year of Study</label>
                 <p-select
-                  [appendTo]="'body'"
                   id="status"
-                  [options]="year_of_study"
-                  [(ngModel)]="member.yearOfStudy"/>
+                  [appendTo]="'body'"
+                  [(ngModel)]="member.yearOfStudy"
+                  [options]="years">
+                  </p-select>
               </div>
             </div>
             <div class="field col-12 md:col-6">
@@ -95,12 +96,13 @@
 
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
-                <label for="role">Role</label>
+                <label for="Team">Role</label>
                 <p-select
+                  id="team"
                   [appendTo]="'body'"
-                  id="role"
-                  [options]="clubRoles"
-                  [(ngModel)]="member.role" />
+                  [(ngModel)]="selectedTeam"
+                  [options]="teams">
+                </p-select>
               </div>
             </div>
             <div class="field col-12 md:col-6">

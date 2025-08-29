@@ -16,7 +16,7 @@
 
       <!--member role filter-->
       <p-multiselect  [options]="roleOptions"
-                      [(ngModel)]="selectedRoles"
+                      [(ngModel)]="selectedTeams"
                       placeholder="Select Role"
                       class="w-full md:w-15rem"
                       display="chip"
@@ -65,16 +65,16 @@
             <p-sortIcon field="id"/>
           </div>
         </th>
-        <th pSortableColumn="memberNo" style="width:12%">
+        <th pSortableColumn="schoolNo" style="width:12%">
           <div class="flex items-center gap-2">
             School No
-            <p-sortIcon field="memberNo"/>
+            <p-sortIcon field="schoolNo"/>
           </div>
         </th>
-        <th pSortableColumn="firstName" style="width:17%">
+        <th pSortableColumn="name" style="width:17%">
           <div class="flex items-center gap-2">
             Name Surname
-            <p-sortIcon field="firstName"/>
+            <p-sortIcon field="name"/>
           </div>
         </th>
         <th pSortableColumn="role" style="width:15%">
@@ -107,9 +107,9 @@
           <p-tableCheckbox [value]="member" />
         </td>
         <td>{{ member.id }}</td>
-        <td>{{ member.memberNo }}</td>
-        <td>{{ member.firstName + " " + member.lastName }}</td>
-        <td>{{ member.role }}</td>
+        <td>{{ member.schoolNo }}</td>
+        <td>{{ member.name }}</td>
+        <td>{{ memberService.getActivePositionString(member) }}</td>
         <td>{{ member.registrationDate }}</td>
         <td>{{ member.membershipStatus }}</td>
         <td class="flex justify-content-center">
