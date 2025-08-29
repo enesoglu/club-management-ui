@@ -38,6 +38,9 @@ export class AuthService {
 
     const user = JSON.parse(userString);
 
-    return 'Basic ' + btoa(user.email + ':' + user.password);
+    if (user && user.email && user.password) {
+      return 'Basic ' + btoa(user.email + ':' + user.password);
+    }
+    return null;
   }
 }
