@@ -67,7 +67,7 @@ export class MemberListComponent implements OnInit {
   importMenuItems!: MenuItem[];
 
   memberStatus = Object.values(MembershipStatus);
-  teams = Object.values(Team);
+  clubTeams = Object.values(Team);
 
   members: ClubMember[] = [];
   filteredMembers: ClubMember[] = [];
@@ -78,9 +78,14 @@ export class MemberListComponent implements OnInit {
   selectedStatus: string[] = ['ACTIVE'];
   selectedTeams: Team[] = [];
   searchTerm: string = ''
-  roleOptions = this.teams;
   statusOptions = [...this.memberStatus];
-
+  public teamOptions = [
+    { label: 'Executive Board',   value: 'EXECUTIVE' },
+    { label: 'Supervisory Board', value: 'SUPERVISORY' },
+    { label: 'Crew',              value: 'CREW' },
+    { label: 'Member',            value: 'MEMBER' },
+    { label: 'Veteran',           value: 'VETERAN' }
+  ];
 
   loadMembers(): void {
     this.memberService.getMembers().subscribe({
@@ -144,7 +149,7 @@ export class MemberListComponent implements OnInit {
     // filter for roles
     if (this.selectedTeams.length > 0) {
       result = result.filter(member => {
-        const activePositionTeam = this.memberService.getActivePosition(member);
+        const activePositionTeam = this.memberService.getActivePositionTeam(member);
         return activePositionTeam && this.selectedTeams.includes(activePositionTeam);
       });
     }

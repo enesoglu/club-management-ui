@@ -59,7 +59,7 @@
                   id="status"
                   [appendTo]="'body'"
                   [(ngModel)]="member.yearOfStudy"
-                  [options]="years">
+                  [options]="yearsOfStudy">
                   </p-select>
               </div>
             </div>
@@ -96,12 +96,12 @@
 
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
-                <label for="Team">Role</label>
+                <label for="Team">Team</label>
                 <p-select
                   id="team"
                   [appendTo]="'body'"
                   [(ngModel)]="selectedTeam"
-                  [options]="teams">
+                  [options]="clubTeams">
                 </p-select>
               </div>
             </div>
