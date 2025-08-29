@@ -4,7 +4,7 @@ export interface Position {
   endDate: Date;
   crewCommittee?: CrewCommittee;
   executiveTitle?: ExecutiveTitle;
-  isActive: Boolean;
+  active: Boolean;
   term: any;
 }
 

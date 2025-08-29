@@ -36,10 +36,10 @@ export class MemberService {
     if (!member.positions || member.positions.length === 0) {
       return undefined;
     }
-    return member.positions.find(p => p.isActive);
+    return member.positions.find(p => p.active == true);
   }
 
-  getActivePosition(member: ClubMember): Team | undefined {
+  getActivePositionTeam(member: ClubMember): Team | undefined {
     const activePosition = this.findActivePosition(member);
 
     return activePosition?.team;
