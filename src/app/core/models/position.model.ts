@@ -2,7 +2,7 @@ export interface Position {
   team: Team;
   startDate: Date;
   endDate: Date;
-  crewComittee?: CrewCommittee;
+  crewCommittee?: CrewCommittee;
   executiveTitle?: ExecutiveTitle;
   isActive: Boolean;
   term: any;

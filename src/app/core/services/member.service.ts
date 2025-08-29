@@ -18,13 +18,20 @@ export class MemberService {
   }
 
   deleteMember(id: number): Observable<void> {
-    return this.http.delete<void>(this.apiUrl + '/findById/' + id)
+    return this.http.delete<void>(this.apiUrl + "/" + id)
   }
 
   saveMember(member: ClubMember): Observable<ClubMember> {
-    return this.http.post<ClubMember>(this.apiUrl, member)
+    if (member.id)
+      // if member has an id, it is an update
+      return this.http.put<ClubMember>(this.apiUrl + "/" + member.id, member)
+    else
+      // if not, it is a new member
+      return this.http.post<ClubMember>(this.apiUrl, member)
   }
 
+
+  /*  ----  helper methods ---- */
   findActivePosition(member: ClubMember): Position | undefined {
     if (!member.positions || member.positions.length === 0) {
       return undefined;
@@ -38,7 +45,6 @@ export class MemberService {
     return activePosition?.team;
   }
 
-  // get member's active position
   getActivePositionString(member: ClubMember): string {
     const activePosition = this.findActivePosition(member);
 
@@ -51,7 +57,7 @@ export class MemberService {
         return `${activePosition.team} (${activePosition.executiveTitle})`;
 
       case Team.CREW:
-        return `${activePosition.team} (${activePosition.crewComittee})`;
+        return `${activePosition.team} (${activePosition.crewCommittee})`;
 
       default:
         return activePosition.team;

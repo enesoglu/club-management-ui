@@ -5,7 +5,7 @@ export interface ClubMember {
   name: string;
   email: string;
   phone: string;
-  schoolNo: number;
+  schoolNo: string;
   nationalId: string;
   yearOfStudy: YearOfStudy;
   faculty: string;
@@ -22,7 +22,7 @@ export enum MembershipStatus {
 }
 
 export enum YearOfStudy {
-  PREPRATION  = "Prepration",
+  PREPARATION  = "Preparation",
   FIRST_YEAR  = "First Year",
   SECOND_YEAR = "Second Year",
   THIRD_YEAR  = "Third Year",
