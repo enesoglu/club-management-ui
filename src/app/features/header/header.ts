@@ -7,6 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { ClubMember } from '../../core/models/club-member.model';
 import { MemberService } from '../../core/services/member.service';
 import {Menu} from 'primeng/menu';
+import {Team} from '../../core/models/position.model';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +22,6 @@ export class Header implements OnInit {
   private router = inject(Router);
 
   currentUser: ClubMember | null = null;
-  userTeam: String = "";
   items: MenuItem[] = []
 
   ngOnInit(): void {
@@ -30,9 +30,6 @@ export class Header implements OnInit {
 
       // if currentUser is not null, menu has 'My Profile' and 'Logout' buttons.
       if (user) {
-
-        // TODO if user has "EXECUTIVE" role, also add "Admin Dashboard" to the menu
-        //  this.userTeam = this.memberService.findActivePosition(user).team;
         this.items = [
           {
             label: "My Profile",
@@ -45,6 +42,28 @@ export class Header implements OnInit {
             command: () => this.logout()
           }
         ];
+
+        // if user has "EXECUTIVE" role, also add "Admin Dashboard" to the menu
+        let activePosition = this.memberService.findActivePosition(user);
+
+        if (activePosition) {
+          let userTeam: Team = activePosition.team;
+          if (userTeam === Team.EXECUTIVE){
+            this.items.splice(1, 0,
+              {
+              label: "Admin Dashboard",
+              icon: "pi pi-microchip",
+              routerLink: ['/admin-dashboard']
+              }
+            )
+          }
+        }
+
+      }
+      else {
+        // if user logged out, clean variables.
+        this.currentUser = null;
+        this.items = [];
       }
     })
   }
