@@ -73,4 +73,8 @@ export class Header implements OnInit {
     void this.router.navigate(['/login']);
   }
 
+  onTitleClick(): void {
+    void this.router.navigate(['/members']);
+  }
+
 }
