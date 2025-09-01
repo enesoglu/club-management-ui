@@ -4,12 +4,19 @@
   </div>
 
   <div class="p-toolbar-group-end">
-    <p-button
-          type="button"
-          label="Logout"
-          icon="pi pi-sign-out"
-          severity="danger"
-          (click)="logout()">
-    </p-button>
+
+    @if (currentUser){
+      <p-menu
+        #menu
+        [model]="items"
+        [popup]="true"
+      />
+
+      <p-button
+        [label]="currentUser.name"
+        (click)="menu.toggle($event)"
+      />
+    }
+
   </div>
 </p-toolbar>

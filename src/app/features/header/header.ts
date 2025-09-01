@@ -1,19 +1,53 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Toolbar } from 'primeng/toolbar';
+import { MenuItem } from 'primeng/api';
+import { ClubMember } from '../../core/models/club-member.model';
+import { MemberService } from '../../core/services/member.service';
+import {Menu} from 'primeng/menu';
 
 @Component({
   selector: 'app-header',
-  imports: [Toolbar, Button],
+  imports: [Toolbar, Button, Menu],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnInit {
 
+  private memberService = inject(MemberService);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  currentUser: ClubMember | null = null;
+  userTeam: String = "";
+  items: MenuItem[] = []
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+
+      // if currentUser is not null, menu has 'My Profile' and 'Logout' buttons.
+      if (user) {
+
+        // TODO if user has "EXECUTIVE" role, also add "Admin Dashboard" to the menu
+        //  this.userTeam = this.memberService.findActivePosition(user).team;
+        this.items = [
+          {
+            label: "My Profile",
+            icon: 'pi pi-user',
+            routerLink: ['/members/' + user.id]
+          },
+          {
+            label: "Logout",
+            icon: "pi pi-sign-out",
+            command: () => this.logout()
+          }
+        ];
+      }
+    })
+  }
 
   logout(): void {
     this.authService.logout();
