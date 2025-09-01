@@ -38,28 +38,25 @@ export class LoginComponent {
       password: ['', [Validators.required]]
     });
   }
+
   onSubmit() {
     this.formSubmitted = true;
     if (this.credentials.valid) {
 
       this.authService.login(this.credentials.value).subscribe({
         next: (response) => {
-          console.log(response);
+          console.log('Login successful for:', response.name);
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Login Successful.',
             life: 3000 });
 
-          const creds = this.credentials.value;
-          const authToken = 'Basic ' + btoa(creds.email + ':' + creds.password);
-          this.authService.saveAuthToken(authToken);
-          void this.router.navigate(['/members'])
+          void this.router.navigate(['/members']);
 
           this.credentials.reset();
           this.formSubmitted = false;
         },
-
         error: (response) => {
           console.log(response);
           this.messageService.add({
@@ -68,7 +65,7 @@ export class LoginComponent {
             detail: 'Wrong E-Mail or Password.',
             life: 3000 });
         }
-      })
+      });
     }
   }
 
