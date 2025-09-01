@@ -1,6 +1,6 @@
 import {MemberService} from '../../core/services/member.service';
 import {ClubMember, MembershipStatus} from '../../core/models/club-member.model';
-import {Position, Team} from '../../core/models/position.model';
+import {Team} from '../../core/models/position.model';
 
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
