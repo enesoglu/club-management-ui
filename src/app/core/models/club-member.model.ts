@@ -22,10 +22,25 @@ export enum MembershipStatus {
 }
 
 export enum YearOfStudy {
-  PREPARATION  = "Preparation",
-  FIRST_YEAR  = "First Year",
-  SECOND_YEAR = "Second Year",
-  THIRD_YEAR  = "Third Year",
-  FOURTH_YEAR = "Fourth Year",
-  GRADUATED   = "Graduated",
+  PREPARATION  = "PREPARATION",
+  FIRST_YEAR  = "FIRST_YEAR",
+  SECOND_YEAR = "SECOND_YEAR",
+  THIRD_YEAR  = "THIRD_YEAR",
+  FOURTH_YEAR = "FOURTH_YEAR",
+  GRADUATED   = "GRADUATED",
 }
+
+export const MembershipStatusDisplayNames: Record<MembershipStatus, string> = {
+  [MembershipStatus.ACTIVE]: "Active",
+  [MembershipStatus.INACTIVE]: "Inactive",
+};
+
+export const YearOfStudyDisplayNames: Record<YearOfStudy, string> = {
+  [YearOfStudy.PREPARATION]: "Preparation",
+  [YearOfStudy.FIRST_YEAR]: "First Year",
+  [YearOfStudy.SECOND_YEAR]: "Second Year",
+  [YearOfStudy.THIRD_YEAR]: "Third Year",
+  [YearOfStudy.FOURTH_YEAR]: "Fourth Year",
+  [YearOfStudy.GRADUATED]: "Graduated",
+};
+
