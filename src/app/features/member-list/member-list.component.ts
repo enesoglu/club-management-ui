@@ -67,7 +67,7 @@ export class MemberListComponent implements OnInit {
   importMenuItems!: MenuItem[];
 
   memberStatus = Object.values(MembershipStatus);
-  clubTeams = Object.values(Team);
+  teamOptions = Object.keys(Team);
 
   members: ClubMember[] = [];
   filteredMembers: ClubMember[] = [];
@@ -79,13 +79,6 @@ export class MemberListComponent implements OnInit {
   selectedTeams: Team[] = [];
   searchTerm: string = ''
   statusOptions = [...this.memberStatus];
-  public teamOptions = [
-    { label: 'Executive Board',   value: 'EXECUTIVE' },
-    { label: 'Supervisory Board', value: 'SUPERVISORY' },
-    { label: 'Crew',              value: 'CREW' },
-    { label: 'Member',            value: 'MEMBER' },
-    { label: 'Veteran',           value: 'VETERAN' }
-  ];
 
   loadMembers(): void {
     this.memberService.getMembers().subscribe({

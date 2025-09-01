@@ -50,7 +50,7 @@ export class MemberDialogComponent implements OnChanges {
   @Output() memberSaved = new EventEmitter<ClubMember>();
 
   clubTeams = Object.keys(Team);
-  yearsOfStudy = Object.values(YearOfStudy);
+  yearsOfStudy = Object.keys(YearOfStudy);
   memberStatus = Object.values(MembershipStatus);
 
   filteredItems: any[] = [];
