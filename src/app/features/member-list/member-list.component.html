@@ -1,5 +1,7 @@
 <p-toast></p-toast>
 
+<app-header></app-header>
+
 <div class="flex justify-content-center my-4">
 <p-card [style]="{width: '98%'}">
 
@@ -13,8 +15,8 @@
     <div class="flex flex-wrap gap-2 justify-content-end">
 
       <!--member role filter-->
-      <p-multiselect  [options]="roleOptions"
-                      [(ngModel)]="selectedRoles"
+      <p-multiselect  [options]="teamOptions"
+                      [(ngModel)]="selectedTeams"
                       placeholder="Select Role"
                       class="w-full md:w-15rem"
                       display="chip"
@@ -63,22 +65,22 @@
             <p-sortIcon field="id"/>
           </div>
         </th>
-        <th pSortableColumn="memberNo" style="width:12%">
+        <th pSortableColumn="schoolNo" style="width:12%">
           <div class="flex items-center gap-2">
             School No
-            <p-sortIcon field="memberNo"/>
+            <p-sortIcon field="schoolNo"/>
           </div>
         </th>
-        <th pSortableColumn="firstName" style="width:17%">
+        <th pSortableColumn="name" style="width:17%">
           <div class="flex items-center gap-2">
             Name Surname
-            <p-sortIcon field="firstName"/>
+            <p-sortIcon field="name"/>
           </div>
         </th>
-        <th pSortableColumn="role" style="width:15%">
+        <th pSortableColumn="team" style="width:15%">
           <div class="flex items-center gap-2">
             Role
-            <p-sortIcon field="role"/>
+            <p-sortIcon field="team"/>
           </div>
         </th>
         <th pSortableColumn="registrationDate" style="width:10%">
@@ -105,9 +107,9 @@
           <p-tableCheckbox [value]="member" />
         </td>
         <td>{{ member.id }}</td>
-        <td>{{ member.memberNo }}</td>
-        <td>{{ member.firstName + " " + member.lastName }}</td>
-        <td>{{ member.role }}</td>
+        <td>{{ member.schoolNo }}</td>
+        <td>{{ member.name }}</td>
+        <td>{{ memberService.getActivePositionString(member) }}</td>
         <td>{{ member.registrationDate }}</td>
         <td>{{ member.membershipStatus }}</td>
         <td class="flex justify-content-center">

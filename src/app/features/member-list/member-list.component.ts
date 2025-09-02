@@ -1,23 +1,25 @@
-import { MemberService } from '../../core/services/member.service';
-import { ClubMember, MemberRole, MembershipStatus } from '../../core/models/club-member.model';
+import {MemberService} from '../../core/services/member.service';
+import {ClubMember, MembershipStatus} from '../../core/models/club-member.model';
+import {Team} from '../../core/models/position.model';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
-import { Card } from 'primeng/card'
-import { TableModule} from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
-import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
-import { InputText } from 'primeng/inputtext';
-import { MultiSelect } from 'primeng/multiselect';
-import { Menu } from 'primeng/menu';
-import { MenuItem, MessageService } from 'primeng/api';
-import { FileUpload } from 'primeng/fileupload';
-import { Toast } from 'primeng/toast';
+import {Card} from 'primeng/card'
+import {TableModule} from 'primeng/table';
+import {ButtonModule} from 'primeng/button';
+import {Tooltip} from 'primeng/tooltip';
+import {MemberDialogComponent} from '../member-dialog/member-dialog.component';
+import {IconField} from 'primeng/iconfield';
+import {InputIcon} from 'primeng/inputicon';
+import {InputText} from 'primeng/inputtext';
+import {MultiSelect} from 'primeng/multiselect';
+import {Menu} from 'primeng/menu';
+import {MenuItem, MessageService} from 'primeng/api';
+import {FileUpload} from 'primeng/fileupload';
+import {Toast} from 'primeng/toast';
+import {Header} from '../header/header';
 
 @Component({
   selector: 'app-member-list',
@@ -28,33 +30,14 @@ import { Toast } from 'primeng/toast';
     FormsModule, TableModule, CommonModule,
     ButtonModule, Tooltip, MemberDialogComponent,
     Card, IconField, InputIcon, InputText,
-    MultiSelect, Menu, FileUpload, Toast,
+    MultiSelect, Menu, FileUpload, Toast, Header,
   ],
-  providers: [MemberService, MessageService]
+  providers: [MessageService]
 })
 export class MemberListComponent implements OnInit {
 
-  @ViewChild('fileUploader') fileUploader!: FileUpload;
-
-  importMenuItems!: MenuItem[];
-
-  memberStatus = Object.values(MembershipStatus);
-  clubRoles = Object.values(MemberRole);
-
-  members: ClubMember[] = [];
-  filteredMembers: ClubMember[] = [];
-  selectedMember: ClubMember | null = null;
-  displayDialog: boolean = false;
-
-  // variables for filters
-  selectedStatus: string[] = ['ACTIVE'];
-  selectedRoles: MemberRole[] = [];
-  searchTerm: string = ''
-  roleOptions = this.clubRoles;
-  statusOptions = [...this.memberStatus];
-
   constructor(
-    private memberService: MemberService,
+    public memberService: MemberService,
     private messageService: MessageService
   ) {}
 
@@ -79,10 +62,28 @@ export class MemberListComponent implements OnInit {
     ];
   }
 
+  @ViewChild('fileUploader') fileUploader!: FileUpload;
+
+  importMenuItems!: MenuItem[];
+
+  memberStatus = Object.values(MembershipStatus);
+  teamOptions = Object.keys(Team);
+
+  members: ClubMember[] = [];
+  filteredMembers: ClubMember[] = [];
+  selectedMember: ClubMember | null = null;
+  displayDialog: boolean = false;
+
+  // variables for filters
+  selectedStatus: string[] = ['ACTIVE'];
+  selectedTeams: Team[] = [];
+  searchTerm: string = ''
+  statusOptions = [...this.memberStatus];
+
   loadMembers(): void {
     this.memberService.getMembers().subscribe({
       next: (data: ClubMember[]) => {
-        data.sort((a, b) => a.firstName.localeCompare(b.firstName))   //sorts by first name
+        data.sort((a, b) => a.name.localeCompare(b.name))   //sorts by first name
         this.members = data;
         this.applyFilters();
       },
@@ -94,10 +95,10 @@ export class MemberListComponent implements OnInit {
 
   expelMember(member: ClubMember): void {
     if (!member) return;
-    if (confirm(`'${member.firstName}' will be expelled. Are you sure?`)) {
+    if (confirm(`'${member.name}' will be expelled. Are you sure?`)) {
       this.memberService.deleteMember(member.id).subscribe({
         next: () => {
-          console.log('Deleted: '+ member.id);
+          console.log('Deleted: ' + member.id);
           this.loadMembers()
         },
         error: (err) => console.error('error occured', err)
@@ -108,7 +109,7 @@ export class MemberListComponent implements OnInit {
   onMemberSave(updatedMember: ClubMember) {
     this.memberService.saveMember(updatedMember).subscribe({
       next: () => {
-        console.log('Updated: '+ updatedMember.id);
+        console.log('Updated: ' + updatedMember.id);
         this.loadMembers()
         this.displayDialog = false;
         this.selectedMember = null;
@@ -134,23 +135,26 @@ export class MemberListComponent implements OnInit {
     let result = this.members;
 
     // filter for status
-    if (this.selectedStatus.length > 0 && !this.selectedStatus.includes('Tümü')) {
+    if (this.selectedStatus.length > 0 && !this.selectedStatus.includes('All')) {
       result = result.filter(member => this.selectedStatus.includes(member.membershipStatus));
     }
 
     // filter for roles
-    if (this.selectedRoles.length > 0) {
-      result = result.filter(member => this.selectedRoles.includes(member.role));
+    if (this.selectedTeams.length > 0) {
+      result = result.filter(member => {
+        const activePositionTeam = this.memberService.getActivePositionTeam(member);
+        return activePositionTeam && this.selectedTeams.includes(activePositionTeam);
+      });
     }
 
     // search bar
     if (this.searchTerm) {
       const lowerCaseSearch = this.searchTerm.toLowerCase();
       result = result.filter(member =>
-        (member.firstName + " " + member.lastName).toLowerCase().includes(lowerCaseSearch) ||
+        (member.name).toLowerCase().includes(lowerCaseSearch) ||
         (member.email || '').toLowerCase().includes(lowerCaseSearch) ||
-        (member.phoneNumber || '').toString().toLowerCase().includes(lowerCaseSearch) ||
-        (member.memberNo || '').toString().toLowerCase().includes(lowerCaseSearch)
+        (member.phone || '').toString().toLowerCase().includes(lowerCaseSearch) ||
+        (member.schoolNo || '').toString().toLowerCase().includes(lowerCaseSearch)
       );
     }
 
@@ -192,13 +196,21 @@ export class MemberListComponent implements OnInit {
   // response "200 OK" from backend
   onCsvUpload(event: any) {
     const response = JSON.parse(event.xhr.response); // get response from backend
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: response.body || 'Members imported successfully.' });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: response.body || 'Members imported successfully.'
+    });
     this.loadMembers();
   }
 
-// error while uploading
+  // error while uploading
   onCsvError(event: any) {
     const errorResponse = JSON.parse(event.xhr.response); // get response from backend
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: errorResponse.body || 'File could not be imported.' });
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: errorResponse.body || 'File could not be imported.'
+    });
   }
 }

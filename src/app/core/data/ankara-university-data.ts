@@ -1,13 +1,6 @@
 // this file contains all of the departments and faculties of Ankara University
 
-export const year_of_study= [
-  'Preparation',
-  '1',
-  '2',
-  '3',
-  '4',
-  'Graduated'
-]
+
 
 export const faculty_list: string[] = [
   "Açık ve Uzaktan Eğitim Fakültesi",

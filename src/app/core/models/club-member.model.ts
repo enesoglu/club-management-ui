@@ -1,29 +1,46 @@
+import {Position} from './position.model';
+
 export interface ClubMember {
   id: number;
-  memberNo: number;
-  firstName: string;
-  lastName: string;
-  memberId: string;
-  role: MemberRole;
+  name: string;
   email: string;
-  phoneNumber: string;
-  yearOfStudy: string;
+  phone: string;
+  schoolNo: string;
+  nationalId: string;
+  yearOfStudy: YearOfStudy;
   faculty: string;
   department: string;
+  password: string;
+  positions?: Position[];
   registrationDate: Date;
   membershipStatus: MembershipStatus;
 }
 
-export enum MemberRole {
-  PRESIDENT = "PRESIDENT",
-  VICE_PRESIDENT = "VICE_PRESIDENT",
-  BOARD_MEMBER = "BOARD_MEMBER",
-  CREW = "CREW",
-  MEMBER = "MEMBER",
-  VETERAN = "VETERAN"
+export enum MembershipStatus {
+  ACTIVE    = "ACTIVE",
+  INACTIVE  = "INACTIVE",
 }
 
-export enum MembershipStatus {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
+export enum YearOfStudy {
+  PREPARATION  = "PREPARATION",
+  FIRST_YEAR  = "FIRST_YEAR",
+  SECOND_YEAR = "SECOND_YEAR",
+  THIRD_YEAR  = "THIRD_YEAR",
+  FOURTH_YEAR = "FOURTH_YEAR",
+  GRADUATED   = "GRADUATED",
 }
+
+export const MembershipStatusDisplayNames: Record<MembershipStatus, string> = {
+  [MembershipStatus.ACTIVE]: "Active",
+  [MembershipStatus.INACTIVE]: "Inactive",
+};
+
+export const YearOfStudyDisplayNames: Record<YearOfStudy, string> = {
+  [YearOfStudy.PREPARATION]: "Preparation",
+  [YearOfStudy.FIRST_YEAR]: "First Year",
+  [YearOfStudy.SECOND_YEAR]: "Second Year",
+  [YearOfStudy.THIRD_YEAR]: "Third Year",
+  [YearOfStudy.FOURTH_YEAR]: "Fourth Year",
+  [YearOfStudy.GRADUATED]: "Graduated",
+};
+
