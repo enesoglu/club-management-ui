@@ -22,15 +22,14 @@
           <div class="grid">
             <div class="field col-12 md:col-6">
               <div class="flex flex-column ">
-                <label for="firstName">First Name</label>
+                <label for="firstName">Name</label>
                 <input pInputText id="firstName" [(ngModel)]="member.name" />
               </div>
             </div>
-            <!--TODO to be deleted-->
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
-                <label for="lastName">Last Name</label>
-                <input pInputText id="lastName" [(ngModel)]="member.name" />
+                <label for="schoolNo">School No</label>
+                <input pInputText id="schoolNo" [(ngModel)]="member.schoolNo" />
               </div>
             </div>
             <div class="field col-12 md:col-6">
@@ -45,11 +44,10 @@
                 <input pInputText id="phone" [(ngModel)]="member.phone" />
               </div>
             </div>
-
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
-                <label for="schoolNo">School No</label>
-                <input pInputText id="schoolNo" [(ngModel)]="member.schoolNo" />
+                <label for="nationalId">National ID</label>
+                <input pInputText id="nationalId" [(ngModel)]="member.nationalId" />
               </div>
             </div>
             <div class="field col-12 md:col-6">
@@ -93,16 +91,10 @@
                 </p-autocomplete>
               </div>
             </div>
-
             <div class="field col-12 md:col-6">
               <div class="flex flex-column">
-                <label for="Team">Team</label>
-                <p-select
-                  id="team"
-                  [appendTo]="'body'"
-                  [(ngModel)]="selectedTeam"
-                  [options]="clubTeams">
-                </p-select>
+                <label for="password">Update Password</label>
+                <input pInputText id="nationalId" [(ngModel)]="member.password" />
               </div>
             </div>
             <div class="field col-12 md:col-6">
@@ -114,6 +106,45 @@
                   [options]="memberStatus"
                   [(ngModel)]="member.membershipStatus"/>
               </div>
+            </div>
+            <div class="field col-12 md:col-6">
+              <div class="flex flex-column  ">
+                <label for="team">Position</label>
+                <p-select
+                  id="team"
+                  [appendTo]="'body'"
+                  [options]="clubTeams"
+                  [(ngModel)]="selectedTeam"
+                  (ngModelChange)="updatePositionDetailsVisibility()"/>
+              </div>
+            </div>
+            <div class="field col-12  md:col-6">
+              @switch (showPositionDetail) {
+                @case ('EXECUTIVE') {
+                  <div class="flex flex-column">
+                    <label for="executiveTitle">Executive Title</label>
+                    <p-select
+                      id="executiveTitle"
+                      [appendTo]="'body'"
+                      placeholder="Select a title"
+                      [(ngModel)]="selectedPositionDetail"
+                      [options]="executiveTitles">
+                    </p-select>
+                  </div>
+                }
+                @case ('CREW') {
+                  <div class="flex flex-column">
+                    <label for="crewCommittee">Crew Committee</label>
+                    <p-select
+                      id="crewCommittee"
+                      [appendTo]="'body'"
+                      placeholder="Select a committee"
+                      [(ngModel)]="selectedPositionDetail"
+                      [options]="crewCommittees">
+                    </p-select>
+                  </div>
+                }
+              }
             </div>
           </div>
         }
