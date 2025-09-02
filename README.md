@@ -1,59 +1,71 @@
-# AngularDemo
+# Club Management System - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.2.
+This project is the frontend for a member management system designed for student clubs and similar organizations. It provides a modern, user-friendly interface for managing member records. The application is built with Angular and utilizes the PrimeNG component library for a rich user experience.
 
-## Development server
+## ✨ Key Features
 
-To start a local development server, run:
+- **Member Dashboard:** View all members in a paginated, sortable, and filterable table.
+  - **Dynamic Filtering:** Easily filter members by name, school ID, role, or membership status.
+  - **Sorting:** Sort the member list by various columns.
+- **Member Management:**
+  - Add new members through a detailed form.
+  - Edit existing member details and their roles/positions within the club.
+  - Remove members from the system.
+- **CSV Import:** Bulk import new members into the system from a `.csv` file.
+- **Authentication:** A secure, token-based login system for authorized users.
+- **Modern & Responsive UI:** Built with PrimeNG and PrimeFlex for a clean, responsive design that works across different devices.
 
-```bash
-ng serve
-```
+## 🗺️ Roadmap / Planned Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+This project is actively under development. Here are the features planned for upcoming releases:
 
-## Code scaffolding
+- **Role-Based Access Control:** An exclusive "Admin Dashboard" for users with the `EXECUTIVE` role to perform privileged actions.
+- **Member Detail Page:** A dedicated, read-only page to view all details of a single member.
+- **Advanced Reporting & Analytics:** Functionality to visualize data and export member reports.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🛠️ Tech Stack
 
-```bash
-ng generate component component-name
-```
+- **Angular:** A powerful framework for building modern web applications.
+- **TypeScript:** A typed superset of JavaScript that enhances code quality.
+- **PrimeNG:** A comprehensive suite of UI components for Angular.
+- **PrimeFlex:** A responsive CSS utility library.
+- **PrimeIcons:** The icon set used throughout the project.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🚀 Getting Started
 
-```bash
-ng generate --help
-```
+Follow these instructions to get a copy of the project up and running on your local machine.
 
-## Building
+### Prerequisites
 
-To build the project run:
+- [Node.js](https://nodejs.org/) (LTS version is recommended)
+- [Angular CLI](https://angular.dev/tools/cli)
 
-```bash
-ng build
-```
+### Installation and Setup
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+1.  **Clone the Repository:**
 
-## Running unit tests
+    ```bash
+    git clone https://github.com/your-username/club-management-ui.git
+    cd club-management-ui
+    ```
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+2.  **Install Dependencies:**
 
-```bash
-ng test
-```
+    ```bash
+    npm install
+    ```
 
-## Running end-to-end tests
+3.  **Backend Service Requirement:**
+    This is a frontend application and requires the corresponding backend service to be running. You can find the backend repository and setup instructions here:
+    **[enesoglu/club-management-api](https://github.com/enesoglu/club-management-api)**
 
-For end-to-end (e2e) testing, run:
+4.  **Run the Development Server:**
+    Once the backend is running, execute the following command to start the frontend application:
 
-```bash
-ng e2e
-```
+    ```bash
+    ng serve
+    ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+    Navigate to `http://localhost:4200/` in your browser.
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> **Note:** This is a frontend application and requires a corresponding backend service to be running. Ensure the backend is operational and accessible at `http://localhost:8080/api/`. You can configure the API endpoint in the service files located under `src/app/core/services/`.
