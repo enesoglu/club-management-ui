@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PositionService {
+export class TermService {
 
   private apiUrl = 'http://localhost:8080/api/terms';
 
