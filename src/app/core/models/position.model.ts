@@ -1,11 +1,14 @@
+import {Term} from './term.model';
+
 export interface Position {
+  id: number;
   team: Team;
   startDate: Date;
   endDate: Date;
   crewCommittee?: CrewCommittee;
   executiveTitle?: ExecutiveTitle;
   active: Boolean;
-  term: any;
+  term: Term;
 }
 
 export enum Team {
