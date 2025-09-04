@@ -1,6 +1,5 @@
 // this file contains all of the departments and faculties of Ankara University
-
-
+// TODO will be moved to the backend
 
 export const faculty_list: string[] = [
   "Açık ve Uzaktan Eğitim Fakültesi",
