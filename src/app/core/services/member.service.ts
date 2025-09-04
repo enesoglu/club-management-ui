@@ -18,17 +18,17 @@ export class MemberService {
   }
 
   getMemberById(id: number): Observable<ClubMember> {
-    return this.http.get<ClubMember>(`${this.apiUrl}/${id}`);
+    return this.http.get<ClubMember>(`${this.apiUrl}/findById/${id}`);
   }
 
   deleteMember(id: number): Observable<void> {
-    return this.http.delete<void>(this.apiUrl + "/" + id)
+    return this.http.delete<void>(`${this.apiUrl}/deleteById/${id}`)
   }
 
   saveMember(member: ClubMember): Observable<ClubMember> {
     if (member.id)
       // if member has an id, it is an update
-      return this.http.put<ClubMember>(this.apiUrl + "/" + member.id, member)
+      return this.http.put<ClubMember>(`${this.apiUrl}/updateById/${member.id}`, member)
     else
       // if not, it is a new member
       return this.http.post<ClubMember>(this.apiUrl, member)
