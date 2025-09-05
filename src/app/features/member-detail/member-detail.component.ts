@@ -133,4 +133,24 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.displayDialog = true;
   }
 
+  save() {
+    if (this.isFormInvalid() || !this.member) {
+      console.error('Member data is invalid or null.');
+      return;
+    }
+
+    this.memberService.saveMember(this.member).subscribe({
+      next: (updatedMember) => {
+        this.member = updatedMember;
+        console.log('Password updated successfully for member:', this.member?.id);
+      },
+      error: (err) => {
+        console.error('Error occurred while updating password', err);
+      }
+    });
+  }
+
+  isFormInvalid(): boolean {
+    return !this.member || !this.member.password || this.member.password.trim() === '';
+  }
 }

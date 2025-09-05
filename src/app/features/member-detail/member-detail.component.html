@@ -163,9 +163,10 @@
       <p-tabpanel value="password">
         <div class="field col-12 md:col-6">
           @if(member) {
-            <div class="flex flex-column">
+            <div class="flex flex-column gap-2">
               <label for="password">Update Password</label>
               <input pInputText id="password" [(ngModel)]="member.password" />
+              <p-button label="Save" (click)="save()" [disabled]="!isFormInvalid" />
             </div>
           }
         </div>
