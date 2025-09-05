@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CrewCommittee, ExecutiveTitle, Position, Team} from '../models/position.model';
 import {Observable} from 'rxjs';
-import {ClubMember} from '../models/club-member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +28,12 @@ export class PositionService {
     return this.http.delete<Position>(`${this.apiUrl}/delete-position/${positionId}`);
   }
 
+  updatePosition(positionId: number, position: Position){
+    return this.http.patch<Position>(`${this.apiUrl}/update-position/${positionId}`, position);
+  }
+
+
+  /*  ---  helper methods  ---  */
   getPositionString(position: Position): string {
     switch (position.team) {
 
