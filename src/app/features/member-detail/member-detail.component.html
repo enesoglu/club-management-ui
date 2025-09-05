@@ -1,3 +1,243 @@
 <app-header></app-header>
 
-<p>member-detail works!</p>
+<p-card [style]="{width: '75%'}">
+  <p-tabs value="info" scrollable>
+    <p-tablist>
+      <p-tab value="info" class="flex !gap-2 align-items-center">
+        <i class="pi pi-info-circle"></i>
+        <span class="font-bold">Info</span>
+      </p-tab>
+      <p-tab value="password" class="flex !gap-2 align-items-center">
+        <i class="pi pi-key"></i>
+        <span class="font-bold">Password</span>
+      </p-tab>
+      <p-tab value="position" class="flex !gap-2 align-items-center">
+        <i class="pi pi-history"></i>
+        <span class="font-bold">Position History</span>
+      </p-tab>
+      <span pTooltip="Not available yet.">
+        <p-tab disabled value="events" class="flex !gap-2 align-items-center">
+        <i class="pi pi-check-circle"></i>
+        <span class="font-bold">Events Attended</span>
+      </p-tab></span>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="info">
+        <p class="m-0">
+        <div class="p-fluid">
+            <div class="p-fluid">
+              @if (member) {
+                <div class="grid">
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column ">
+                      <label for="firstName">Name</label>
+                      <input pInputText id="firstName" [(ngModel)]="member.name" />
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="schoolNo">School No</label>
+                      <input pInputText id="schoolNo" [(ngModel)]="member.schoolNo" />
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="email">Email</label>
+                      <input pInputText type="email" id="email" [(ngModel)]="member.email" />
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="phone">Phone</label>
+                      <input pInputText id="phone" [(ngModel)]="member.phone" />
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="nationalId">National ID</label>
+                      <input pInputText id="nationalId" [(ngModel)]="member.nationalId" />
+                    </div>
+                  </div>
+                  <!--TODO position -->
+<!--                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="year">Year of Study</label>
+                      <p-select
+                        id="status"
+                        [appendTo]="'body'"
+                        [(ngModel)]="member.yearOfStudy"
+                        [options]="yearsOfStudy">
+                      </p-select>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="department">Department</label>
+                      <p-autocomplete
+                        id="department"
+                        [appendTo]="'body'"
+                        [(ngModel)]="member.department"
+                        [suggestions]="filteredItems"
+                        (completeMethod)="searchDepartment($event)"
+                        [dropdown]="true"
+                        placeholder="Start typing to search..."
+                        forceSelection="true">
+                      </p-autocomplete>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="faculty">Faculty</label>
+                      <p-autocomplete
+                        id="faculty"
+                        [appendTo]="'body'"
+                        [(ngModel)]="member.faculty"
+                        [suggestions]="filteredItems"
+                        (completeMethod)="searchFaculty($event)"
+                        [dropdown]="true"
+                        placeholder="Start typing to search..."
+                        forceSelection="true">
+                      </p-autocomplete>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column">
+                      <label for="password">Update Password</label>
+                      <input pInputText id="nationalId" [(ngModel)]="member.password" />
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column  ">
+                      <label for="status">Status</label>
+                      <p-select
+                        [appendTo]="'body'"
+                        id="status"
+                        [options]="memberStatus"
+                        [(ngModel)]="member.membershipStatus"/>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <div class="flex flex-column  ">
+                      <label for="team">Position</label>
+                      <p-select
+                        id="team"
+                        [appendTo]="'body'"
+                        [options]="clubTeams"
+                        [(ngModel)]="selectedTeam"
+                        (ngModelChange)="updatePositionDetailsVisibility()"/>
+                    </div>
+                  </div>
+                  <div class="field col-12  md:col-6">
+                    @switch (showPositionDetail) {
+                      @case ('EXECUTIVE') {
+                        <div class="flex flex-column">
+                          <label for="executiveTitle">Executive Title</label>
+                          <p-select
+                            id="executiveTitle"
+                            [appendTo]="'body'"
+                            placeholder="Select a title"
+                            [(ngModel)]="selectedPositionDetail"
+                            [options]="executiveTitles">
+                          </p-select>
+                        </div>
+                      }
+                      @case ('CREW') {
+                        <div class="flex flex-column">
+                          <label for="crewCommittee">Crew Committee</label>
+                          <p-select
+                            id="crewCommittee"
+                            [appendTo]="'body'"
+                            placeholder="Select a committee"
+                            [(ngModel)]="selectedPositionDetail"
+                            [options]="crewCommittees">
+                          </p-select>
+                        </div>
+                      }
+                    }
+                  </div>-->
+                </div>
+              }
+            </div>
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="password">
+        <div class="field col-12 md:col-6">
+          @if(member) {
+            <div class="flex flex-column">
+              <label for="password">Update Password</label>
+              <input pInputText id="password" [(ngModel)]="member.password" />
+            </div>
+          }
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="position">
+
+        @if(member){
+        <p-card [style]="{width: '75%'}">
+            <p-table
+              [value]="positions">
+              <ng-template #header>
+                <tr>
+                  <th>Active</th>
+                  <th>Position ID</th>
+                  <th>Role</th>
+                  <th>Term</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </ng-template>
+              @if (positions){
+                <ng-template #body let-position>
+                  <tr>
+                    <td class="text-center" style="width:5%">
+                      @if (position.active) {
+                      <i class="pi pi-check"></i> }
+                    </td>
+                    <td>{{ position.id }}</td>
+                    <td>{{ positionService.getPositionString(position) }}</td>
+                    <td>{{ position.term.name }}</td>
+                    <td class="flex justify-content-center">
+                      <p-button
+                        type="button"
+                        size="small"
+                        pTooltip="Edit Position"
+                        icon="pi pi-pencil"
+                        text
+                        (click)="openPositionDialog(position)"
+                      >
+
+                      </p-button>
+
+                      <p-button
+                        type="button"
+                        size="small"
+                        pTooltip="Delete Position"
+                        icon="pi pi-times"
+                        text
+                        (click)="deletePosition(position.id)"
+                      >
+
+                      </p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+              } @else {
+                <tr><td>No positions.</td></tr>
+              }
+            </p-table>
+          </p-card>
+        }
+
+      </p-tabpanel>
+      <p-tabpanel value="events">
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</p-card>
+
+@if (displayDialog && selectedPosition) {
+  <app-position-dialog
+    [(visible)]="displayDialog"
+    [position]="selectedPosition"
+    (positionSaved)="onPositionSave($event)"
+  />
+}
