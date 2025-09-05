@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {MemberService} from '../../core/services/member.service';
@@ -14,6 +14,7 @@ import {PositionService} from '../../core/services/position.service';
 import {Position} from '../../core/models/position.model';
 import {Button} from 'primeng/button';
 import {PositionDialogComponent} from '../position-dialog/position-dialog.component';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-member-detail',
@@ -26,7 +27,9 @@ import {PositionDialogComponent} from '../position-dialog/position-dialog.compon
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.css'
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   private route = inject(ActivatedRoute)
   protected positionService = inject(PositionService);
@@ -38,8 +41,12 @@ export class MemberDetailComponent implements OnInit {
   ngOnInit(): void {
 
     // get member id from URL
-    this.route.paramMap.subscribe(params => {
-      const idParam = params.get('id');
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe(params => {
+        const idParam = params.get('id');
 
       // if id is valid
       if (idParam) {
@@ -52,6 +59,11 @@ export class MemberDetailComponent implements OnInit {
         this.loadPositions(memberId)
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   member: ClubMember | null = null;
