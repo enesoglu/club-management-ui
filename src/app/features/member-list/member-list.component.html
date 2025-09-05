@@ -95,10 +95,10 @@
             <p-sortIcon field="status"/>
           </div>
         </th>
-        <th class="text-center" style="width:5%">
+        <th #Actions class="text-center" style="width:5%">
           Actions
         </th>
-        <th style="width:2%"></th>
+        <th #Gap style="width:2%"></th>
       </tr>
     </ng-template>
     <ng-template #body let-member>
@@ -132,6 +132,7 @@
         <td></td>
       </tr>
     </ng-template>
+
     <ng-template #footer>
       <ng-template #paginatorleft>
         <p-menu #menu [model]="importMenuItems" [popup]="true" [appendTo]="footer"></p-menu>
@@ -141,6 +142,7 @@
         <p-button type="button" icon="pi pi-cloud" text />
       </ng-template>
     </ng-template>
+
   </p-table>
 </p-card>
 
