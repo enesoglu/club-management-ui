@@ -14,32 +14,33 @@ import {InputTextModule} from 'primeng/inputtext';
 import {SelectModule} from 'primeng/select';
 import {AutoComplete} from 'primeng/autocomplete';
 import {forkJoin, Observable, of} from 'rxjs';
+import {DialogBaseComponent} from '../../shared/base-classes/dialog-base';
 
 @Component({
   selector: 'app-member-dialog',
   templateUrl: 'member-dialog.component.html',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    DialogModule,
-    ButtonModule,
-    InputTextModule,
-    SelectModule,
+    CommonModule, FormsModule, DialogModule,
+    ButtonModule, InputTextModule, SelectModule,
     AutoComplete,
   ],
 })
-export class MemberDialogComponent implements OnChanges {
+export class MemberDialogComponent extends DialogBaseComponent implements OnChanges {
 
   constructor(private memberService: MemberService,
               private positionService: PositionService,) {
+    super();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['member'] && this.member) {
       this.selectedTeam = (this.memberService.getActivePositionTeam(this.member));
       this.originalTeam = this.selectedTeam;
-      this.updatePositionDetailsVisibility();
+
+      const activePosition = this.memberService.findActivePosition(this.member);
+      if (activePosition)
+        this.updatePositionDetailsVisibility(activePosition);
     }
   }
 
@@ -54,12 +55,12 @@ export class MemberDialogComponent implements OnChanges {
   clubTeams = Object.keys(Team);
   executiveTitles = Object.keys(ExecutiveTitle);
   crewCommittees = Object.keys(CrewCommittee);
-  showPositionDetail: "EXECUTIVE" | "CREW" | null = null;
-  selectedPositionDetail: ExecutiveTitle | CrewCommittee | undefined;
-  originalPositionDetail: ExecutiveTitle | CrewCommittee | undefined;
+  declare showPositionDetail: "EXECUTIVE" | "CREW" | null;
+  declare selectedPositionDetail: ExecutiveTitle | CrewCommittee | undefined;
+  declare originalPositionDetail: ExecutiveTitle | CrewCommittee | undefined;
 
+  declare selectedTeam: Team | undefined
   filteredItems: any[] = [];
-  selectedTeam: Team | undefined
   originalTeam: Team | undefined
 
   save() {
@@ -105,25 +106,6 @@ export class MemberDialogComponent implements OnChanges {
   cancel() {
     this.visible = false;
     this.visibleChange.emit(this.visible);
-  }
-
-  updatePositionDetailsVisibility(): void {
-    const activePosition = this.member ? this.memberService.findActivePosition(this.member) : undefined;
-
-    if (this.selectedTeam === Team.EXECUTIVE){
-      this.showPositionDetail = "EXECUTIVE";
-      this.selectedPositionDetail = activePosition?.executiveTitle
-      this.originalPositionDetail = this.selectedPositionDetail
-
-    } else if (this.selectedTeam === Team.CREW){
-      this.showPositionDetail = "CREW";
-      this.selectedPositionDetail = activePosition?.crewCommittee
-      this.originalPositionDetail = this.selectedPositionDetail
-
-    } else {
-      this.showPositionDetail = null;
-      this.selectedPositionDetail = undefined;
-    }
   }
 
   searchDepartment(event: any) {
