@@ -1,0 +1,117 @@
+<p-dialog
+  header="Position Details"
+  [modal]="true"
+  [(visible)]="visible"
+  (onHide)="cancel()"
+  [style]="{ width: '40rem' }"
+  styleClass="position-details-dialog">
+
+  <ng-template pTemplate="header">
+    <div class="flex flex-column gap-2">
+      <h2 class="m-0">{{ position?.id ? 'Edit Position' : 'Add New Position' }}</h2>
+      <span class="p-text-secondary">
+        {{ position?.id ? 'Update the position' : 'Fill in the information for the new position' }}
+      </span>
+    </div>
+  </ng-template>
+
+  <div class="p-fluid">
+    <div class="p-fluid">
+      @if (position) {
+        <div class="grid">
+
+          <!--#region Position-->
+          <div class="field col-12 md:col-6">
+            <div class="flex flex-column  ">
+              <label for="team">Position</label>
+              <p-select
+                id="team"
+                [appendTo]="'body'"
+                [options]="clubTeams"
+                [(ngModel)]="selectedTeam"
+                (ngModelChange)="updatePositionDetailsVisibility(position)"/>
+            </div>
+          </div>
+          <!--#endregion -->
+
+          <!--#region ExecutiveTitle/CrewCommittee-->
+          <div class="field col-12  md:col-6">
+            @switch (showPositionDetail) {
+              @case ('EXECUTIVE') {
+                <div class="flex flex-column">
+                  <label for="executiveTitle">Executive Title</label>
+                  <p-select
+                    id="executiveTitle"
+                    [appendTo]="'body'"
+                    placeholder="Select a title"
+                    [(ngModel)]="selectedPositionDetail"
+                    [options]="executiveTitles">
+                  </p-select>
+                  @if (isFormInvalid && selectedTeam === 'EXECUTIVE' && !selectedPositionDetail) {
+                    <small class="p-error">A title must be selected.</small>
+                  }
+                </div>
+              }
+              @case ('CREW') {
+                <div class="flex flex-column">
+                  <label for="crewCommittee">Crew Committee</label>
+                  <p-select
+                    id="crewCommittee"
+                    [appendTo]="'body'"
+                    placeholder="Select a committee"
+                    [(ngModel)]="selectedPositionDetail"
+                    [options]="crewCommittees">
+                  </p-select>
+                  @if (isFormInvalid && selectedTeam === 'CREW' && !selectedPositionDetail) {
+                    <small class="p-error">A committee must be selected.</small>
+                  }
+                </div>
+              }
+            }
+          </div>
+          <!--#endregion-->
+
+          <!--#region Term-->
+          <div class="field col-12 md:col-6">
+            <div class="flex flex-column  ">
+              <label for="term">Term</label>
+              <p-select
+                id="term"
+                [appendTo]="'body'"
+                [options]="terms"
+                optionLabel="name"
+                [(ngModel)]="selectedTerm"
+              />
+            </div>
+          </div>
+          <!--#endregion -->
+
+        </div>
+      }
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+
+    <div class="flex justify-content-between align-items-center w-full mt-4">
+
+      <div>
+        @if (position?.id) {
+          <div class="text-sm text-color-secondary"> <div>Database ID: {{ position?.id }}</div>
+            <div> Start Date: {{ position?.startDate }}</div>
+            <div>
+                 End Date: {{ position?.endDate ?  position?.endDate : 'Position is active.' }}
+              </div>
+          </div>
+        }
+      </div>
+
+      <div class="flex gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="cancel()" />
+        <p-button label="Save" (click)="save()" [disabled]="isFormInvalid" />
+      </div>
+
+    </div>
+  </ng-template>
+
+</p-dialog>
